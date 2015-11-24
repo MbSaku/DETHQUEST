@@ -1,0 +1,82 @@
+<?php
+//Frontend
+define('Private_access', "Acceso privado");
+define('Username_or_email', "Usuario / Email");
+define('Password', "Contraseña");
+define('Log_in', "Acceder");
+define('Log_out', "Salir");
+define('Login_incorrect', "Credenciales incorrectos");
+define('Register', "Regístrate");
+define('Account_recovery', "Recuperación / activación de cuentas");
+define('Accept_terms_and_conditions', "Has leído y entendido nuestras condiciones del servicio.");
+define('Register_help', "Rellena el siguiente formulario y registrate en nuestra web.");
+define('Registry_email_sent', "Se te ha enviado un-email con los detalles para la activación de tu cuenta");
+define('Registry_email_not_sent', "Se ha producido un error en el servidor de correo y no se te ha enviado confirmación. Prueba más tarde en recuperación de cuentas para activar tu cuenta.");
+define('You_must_accept_terms', "Es necesario que aceptes los términos y condiciones primero");
+define('Recovery_help', "Por favor, envíanos tu dirección de e-mail de usuario y recibirás un mensaje con instrucciones para la recuperación / activación de tu cuenta.");
+define('Recover_account', "Recuperar / activar cuenta");
+define('Thanks_for_signing_up_to', "Gracias por registrarte en");
+define('Your_login_details_are', "Tus detalles de acceso:");
+define('Activate_your_account', "Activa tu cuenta ahora");
+define('Account_recovery_for', "Solicitud de recuperación de cuentas de");
+define('Recovery_instructions', "Haz clic aquí para recuperar el acceso a tu cuenta");
+define('Recovery_email_sent', "Se te ha enviado un email con los detalles para la recuperación de tu cuenta. Si no lo recibes en unos minutos comprueba tu filtro antispam.");
+define('Recovery_email_not_sent', "Se ha producido un error en el servidor de correo. Inténtalo de nuevo más tarde.");
+define('Password_reset', "Se ha reseteado tu contraseña.");
+define('Password_email_sent', "Se te ha enviado un e-mail con tu nueva contraseña de recuperación.");
+define('This_email_not_exists', "Esta cuenta no se encuentra en el sistema. Debes utilizar tu correo electrónico registrado.");
+//Private panel
+define('User_details', "Detalles de usuario");
+define('User_email', "E-mail");
+define('Change_email', "Cambiar e-mail");
+define('Save_email', "Guardar");
+define('New_password', "Nueva contraseña");
+define('Change_password', "Cambiar contraseña");
+define('Save_password', "Guardar");
+define('Password_change_help', "Puedes actualizar tu contraseña si lo deseas:");
+define('User_data_saved', "Datos de usuario actualizados");
+define('User_data_not_saved', "No se realizaron cambios");
+define('Password_updated', "Contraseña actualizada");
+define('Password_not_updated', "La contraseña introducida no se pudo actualizar");
+define('Account_activity', "Actividad de la cuenta");
+//Backend
+define('Users', "Usuarios");
+define('Charges', "Cargos");
+//Users
+define('Users_help', "Aquí puedes ver y configurar los usuarios registrados.");
+define('Active_users', "Usuarios activos:");
+define('All_users', "Todos");
+define('Last_active_on', "Última actividad: ");
+define('Add_new_user', "Registrar un nuevo usuario");
+define('Username_email_filter', "Buscar:");
+define('Filter_users', "Filtrar");
+define('Editing_user', "Editando usuario");
+define('User_name', "Nombre:");
+define('Email', "Email:");
+define('User_active', "Cuenta verificada");
+define('Charge', "Cargo:");
+define('Back_to_users', "Volver");
+define('Operation_not_permitted', "Operación no permitida");
+define('Save_user', "Guardar");
+define('Delete_user', "Eliminar");
+define('Set_password', "Contraseña:");
+define('Reset_password', "Actualizar contraseña (opcional):");
+define('User_registered', "Usuario registrado");
+define('Error_activating_account', "Error activando la cuenta");
+define('You_will_delete_this_user_are_you_sure', "Vas a eliminar este usuario. Esto no se puede deshacer. ¿Estás seguro?");
+define('Yes_delete_user', "Si");
+define('No_delete_user', "No, dejarlo como está");
+define('User_deleted', "Usuario eliminado");
+define('User_not_deleted', "Se produjo un error eliminando el usuario");
+//Charges
+define('Charge_help', "Aquí puedes definir los cargos existentes en la página. Los nuevos usuarios cogerán automàticamente el cargo de mayor nivel.");
+define('Available_charges', "Cargos:");
+define('Save_charge', "Guardar");
+define('Delete_charge', "Eliminar");
+define('Charge_name', "Nombre:");
+define('Charge_level', "Nivel:");
+define('Add_new_charge', "Añadir cargo");
+define('Charge_saved', "Cargo modificado correctamente");
+define('Charge_deleted', "Cargo eliminado");
+define('Charge_not_saved', "Se ha producido un error eliminando el cargo");
+?>
