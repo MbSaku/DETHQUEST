@@ -157,8 +157,9 @@ if($dethuser->getCharacter() == 0){
         </div>
       </div>      
       <p><?php 
-        echo Wealth.': <span class="out">'.number_format($character->getCoins(), 0, ',', '.').Coins.'</span>'; 
-      ?></p>      
+        echo Wealth.': <span class="out">'.number_format( $character->getCoins(), 0, ',', '.' ).Coins.'</span><br>
+        '.Premium_wealth.': <span class="out">'.number_format( $character->getPremium(), 0, ',', '.' ).'</span>'; 
+      ?></p>
       <div class="charstats">
         <div class="stat">
           <div class="name"><?php echo Health; ?></div>

@@ -20,6 +20,7 @@ class PlayerCharacter extends DatabaseObject {
   protected $constitution = 0;
   protected $intelligence = 0;
   protected $coins = 0;
+  protected $premium = 0;
   protected $experience = 0;
   protected $kills = 0;
   protected $deaths = 0;
@@ -39,73 +40,48 @@ class PlayerCharacter extends DatabaseObject {
   public function getId(){
     return $this->id;
   }
+  
   public function getName(){
     return $this->name;
   }
+  public function setName( $string ){
+    $this->name = $string;
+  }
+  
   public function getClass(){
     return $this->class;
   }
+  
   public function getRace(){
     return $this->race;
   }
+  
   public function getGender(){
     return $this->gender;
   }
+  
   public function getBody(){
     return $this->body;
   }
+  
   public function getHead(){
     return $this->head;
   }
+  
   public function getHair(){
     return $this->hair;
   }
+  
   public function getFace(){
     return $this->face;
   }
+  
   public function getLevel(){
     return $this->level;
   }
+  
   public function getHealth(){
     return $this->health;
-  }
-  public function getMaxhealth(){
-    return $this->maxhealth;
-  }
-  public function getSpeed(){
-    return $this->speed;
-  }
-  public function getStrength(){
-    return $this->strength;
-  }
-  public function getDexterity(){
-    return $this->dexterity;
-  }
-  public function getConstitution(){
-    return $this->constitution;
-  }
-  public function getIntelligence(){
-    return $this->intelligence;
-  }
-  public function getCoins(){
-    return $this->coins;
-  }
-  public function getExperience(){
-    return $this->experience;
-  }
-  public function getKills(){
-    return $this->kills;
-  }
-  public function getDeaths(){
-    return $this->deaths;
-  }
- 
-/*
- * SETTERS
- */
-  
-  public function setName( $name ){
-    $this->name = $name;
   }
   public function setHealth( $integer ){
     if( $integer < 0 ){
@@ -116,12 +92,59 @@ class PlayerCharacter extends DatabaseObject {
     } 
     $this->health = $integer;
   }
+  
+  public function getMaxhealth(){
+    return $this->maxhealth;
+  }
+  
+  public function getSpeed(){
+    return $this->speed;
+  }
+  
+  public function getStrength(){
+    return $this->strength;
+  }
+  
+  public function getDexterity(){
+    return $this->dexterity;
+  }
+  
+  public function getConstitution(){
+    return $this->constitution;
+  }
+  
+  public function getIntelligence(){
+    return $this->intelligence;
+  }
+  
+  public function getCoins(){
+    return $this->coins;
+  }
   public function setCoins( $integer ){
     $this->coins = $integer;
   }
   
+  public function getPremium(){
+    return $this->premium;
+  }
+  public function setPremium( $integer ){
+    $this->premium = $integer;
+  }
+  
+  public function getExperience(){
+    return $this->experience;
+  }
+  
+  public function getKills(){
+    return $this->kills;
+  }
+  
+  public function getDeaths(){
+    return $this->deaths;
+  }
+  
 /*
- * PUBLIC METHODS
+ * PUBLIC
  */
   
   public function getUser(){
@@ -839,7 +862,7 @@ class PlayerCharacter extends DatabaseObject {
   }
   
 /*
- * PRIVATE METHODS
+ * PRIVATE
  */
   
 }

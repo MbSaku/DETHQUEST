@@ -2,7 +2,7 @@
 Abstract class DatabaseObject {   //Manages database operations (construct, save and delete) of an object in database.
 
   private $table = '';          //Table affected.
-  private $vars = Array();      //Array with object vars, must coincide with database columns.
+  private $vars = array();      //Array with object vars, must coincide with database columns.
   protected $datalink = null;   //Datalink oject accessible in child objects.
   
 /*

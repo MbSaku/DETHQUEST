@@ -59,59 +59,59 @@ class Ajaxsite {
  
   public function inputCheck(){  //Processes post and get variables
     $log = '';
-    if ($this->debug){
+    if( $this->debug ){
       echo "<script>console.log('AJAX INPUT:')</script>";
     }
-    foreach ($_POST as $key => $value){
-      switch ($key){
+    foreach( $_POST as $key => $value ){
+      switch( $key ){
         case 'code':
-          $_POST[$key] = strip_tags ($_POST[$key],'<p><a><h1><h2><h3><h4><table><tr><th><td><div><ul><ol><li><sub><sup><img><iframe><script><strong><b><br><embed><object><param><span><em>'); 
-          $_POST[$key] = str_replace ('"', "'", $_POST[$key]); //HTML code
+          $_POST[$key] = strip_tags( $_POST[$key],'<p><a><h1><h2><h3><h4><table><tr><th><td><div><ul><ol><li><sub><sup><img><iframe><script><strong><b><br><embed><object><param><span><em>' ); 
+          $_POST[$key] = str_replace( '"', "'", $_POST[$key] ); //HTML code
         break;
         default:
-          $_POST[$key] = strip_tags ($_POST[$key]);
-          $_POST[$key] = str_replace ('"', '&#34;', $_POST[$key]);
-          $_POST[$key] = str_replace ("'", '&#39;', $_POST[$key]);
+          $_POST[$key] = strip_tags( $_POST[$key] );
+          $_POST[$key] = str_replace('"', '&#34;', $_POST[$key] );
+          $_POST[$key] = str_replace("'", '&#39;', $_POST[$key] );
       }
       $value = $_POST[$key];
-      if ($this->debug
-      and $key != 'code'){
-        echo "<script>console.log('POST: ".$key." => ".str_replace(Array("\n", "\r"), " ", $value)."')</script>";
+      if( $this->debug
+      and $key != 'code' ){
+        echo "<script>console.log('POST: ".$key." => ".str_replace( Array( "\n", "\r" ), " ", $value )."')</script>";
       }
-      if ($key == 'password'){
+      if( $key == 'password' ){
         $value = '****';
       }
       $log .= 'POST['.$key.'] => '.$value."\r\n";
     }
-    foreach ($_GET as $key => $value){
-      $_GET[$key] = str_replace (' ', '_', $_GET[$key]);
-      $_GET[$key] = str_replace (array ('"', "'", ",", ";","="), '', $_GET[$key]);
-      if ($this->debug){
+    foreach( $_GET as $key => $value ){
+      $_GET[$key] = str_replace( ' ', '_', $_GET[$key] );
+      $_GET[$key] = str_replace( array( '"', "'", ",", ";", "=" ), '', $_GET[$key] );
+      if( $this->debug ){
         echo "<script>console.log('GET: ".$key." => ".$_GET[$key]."')</script>";
       }
       $log .= 'GET['.$key.'] => '.$value."\r\n";
     }
-    if (isset($_FILES)){
-      foreach ($_FILES as $key => $value){
-        if ($this->debug){
+    if( isset( $_FILES ) ){
+      foreach( $_FILES as $key => $value ){
+        if( $this->debug ){
           echo "<script>console.log('FILES: ".$key."')</script>";
         }
-        $log .= 'FILES['.$key.'] => '.var_export($value, true)."\r\n";
+        $log .= 'FILES['.$key.'] => '.var_export( $value, true )."\r\n";
       }
     }
-    if (isset($_POST['lang'])){
+    if( isset( $_POST['lang'] ) ){
       $_SESSION['lang'] = $_POST['lang'];
     }
-    if ($this->debug){
-      foreach ($_SESSION as $k => $v){
-        if (!is_array($v)){
+    if( $this->debug ){
+      foreach( $_SESSION as $k => $v ){
+        if( !is_array( $v ) ){
           echo "
           <script>console.log('SESSION: ".$k." => ".$v."')</script>";
         }
       }
     }
-    if (count($_POST) > 0){
-      $this->addLog($log);
+    if( count( $_POST ) > 0 ){
+      $this->addLog( $log );
     }
   }
  
@@ -141,21 +141,21 @@ class Ajaxsite {
     $query = 'select name
     from int_lang
     where lang="'.$_SESSION['lang'].'"';
-    $result = $this->datalink->dbQuery($query, 'result');
-    if (isset($result[0])){
+    $result = $this->datalink->dbQuery( $query, 'result' );
+    if( isset( $result[0] ) ){
       return $result[0][0];
     }else{
       return '?';
     }
   }
   
-  public function imageUpload ($file, $dir) {
+  public function imageUpload( $file, $dir ) {
     $ret = '';
     $mwidth = 1024;  //Maximum size of uploaded pictures.
     $mheight = 768;
-    $imagename = str_replace (array (' ', "'"), '_', $file['name']); //Store relevant information
-    if ($file['error'] > 0) {
-      switch ($file['error']){
+    $imagename = str_replace( array( ' ', "'" ), '_', $file['name'] ); //Store relevant information
+    if( $file['error'] > 0 ) {
+      switch( $file['error'] ){
       case 1:
       case 2:
         echo '<p class="error">'.File_uploaded_is_too_big.'.</p>';
@@ -168,8 +168,8 @@ class Ajaxsite {
         echo '<p class="error">'.File_not_uploaded.'.</p>';
       }
     }else{
-      $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-      switch ($ext){
+      $ext = pathinfo( $file['name'], PATHINFO_EXTENSION );
+      switch( $ext ){
         case 'jpg':
         case 'JPG':
         case 'jpeg':
@@ -178,27 +178,27 @@ class Ajaxsite {
         case 'PNG':
         case 'gif':
         case 'GIF':
-          $image = new Image($file['tmp_name']);
-          $imageinfo = (getimagesize ($file['tmp_name']));
-          if ($imageinfo[0] > $imageinfo[1] 
-          and $imageinfo[0] > $mwidth){
-            $image->resizeToWidth($mwidth);  //Picture width
+          $image = new Image( $file['tmp_name'] );
+          $imageinfo = getimagesize( $file['tmp_name'] );
+          if( $imageinfo[0] > $imageinfo[1] 
+          and $imageinfo[0] > $mwidth ){
+            $image->resizeToWidth( $mwidth );  //Picture width
           }
-          if ($imageinfo[1] > $imageinfo[0] 
-          and $imageinfo[1] > $mheight){
-            $image->resizeToHeight($mheight);  //Picture height
+          if( $imageinfo[1] > $imageinfo[0] 
+          and $imageinfo[1] > $mheight ){
+            $image->resizeToHeight( $mheight );  //Picture height
           }
           $validate = false;
-          while (!$validate){
-            if (file_exists ($this->root.'uploads/'.$dir.'/'.$imagename)){
+          while( !$validate ){
+            if( file_exists( $this->root.'uploads/'.$dir.'/'.$imagename ) ){
               $imagename = '-'.$imagename;
             }else{
               $validate = true;
             }
           }
-          if ($image->save ($this->root.'uploads/'.$dir.'/'.$imagename)){
+          if( $image->save( $this->root.'uploads/'.$dir.'/'.$imagename ) ){
             $ret = $imagename;
-            chmod ($this->root.'uploads/'.$dir.'/'.$imagename, $this->modfiles);  //Uploading done
+            chmod( $this->root.'uploads/'.$dir.'/'.$imagename, $this->modfiles );  //Uploading done
           }
         break;
       }
@@ -206,11 +206,11 @@ class Ajaxsite {
     return $ret;
   }
 
-  public function fileUpload ($file, $dir) {
+  public function fileUpload( $file, $dir ) {
     $ret = '';
-    $nom = str_replace (array (' ', "'"), '_', $file['name']); //Store relevant information
-    if ($file['error'] > 0) {
-      switch ($file['error']){
+    $name = str_replace( array( ' ', "'" ), '_', $file['name'] ); //Store relevant information
+    if( $file['error'] > 0 ) {
+      switch( $file['error'] ){
       case 1:
       case 2:
         echo '<p class="error">'.File_uploaded_is_too_big.'.</p>';
@@ -223,16 +223,16 @@ class Ajaxsite {
         echo '<p class="error">'.File_not_uploaded.'.</p>';
       }
     }else{
-      $validar = false;
-      while (!$validar){
-        if (file_exists ($this->root.'uploads/'.$dir.'/'.$nom)){
-          $nom = '-'.$nom;
+      $validate = false;
+      while( !$validate ){
+        if( file_exists( $this->root.'uploads/'.$dir.'/'.$name ) ){
+          $name = '-'.$name;
         }else{
-          $validar = true;
+          $validate = true;
         }
       }
-      if (move_uploaded_file($file['tmp_name'], $this->root.'uploads/'.$dir.'/'.$nom)){
-        $ret = $nom;
+      if( move_uploaded_file( $file['tmp_name'], $this->root.'uploads/'.$dir.'/'.$name ) ){
+        $ret = $name;
       }
     }
     return $ret;
@@ -247,18 +247,19 @@ class Ajaxsite {
     }
   }
 
-  public function dirList($directory){
+  public function dirList( $directory ){
     $results = array ();  //Files and folder names
     $files = array ();    //Useful file names at the end of execution
-    if (is_dir($directory)){
-      $results = scandir ($directory);
+    if( is_dir( $directory ) ){
+      $results = scandir( $directory );
     }
-    foreach ($results as $file){
-      if ($file != '.' && $file != '..'){ //Not significant used folder symbols
+    foreach( $results as $file ){
+      if( $file != '.' 
+      and $file != '..' ){ //Not significant used folder symbols
         $files[] = $file;
       }
     }
-    sort ($files);
+    sort( $files );
     return $files;
   }
 
@@ -309,7 +310,7 @@ class Ajaxsite {
     } 
     
     // finally get the correct version number
-    $known = array('Version', $ub, 'other');
+    $known = array( 'Version', $ub, 'other' );
     $pattern = '#(?<browser>'.join( '|', $known ).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
     if( !preg_match_all( $pattern, $u_agent, $matches ) ){
         // we have no matching number just continue

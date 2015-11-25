@@ -39,7 +39,8 @@ if( $dethuser->getCharacter() == 0 ){
           <div class="bar-grey" style="width:'.( ( $character->getExperience() / $character->expNextLevel() ) * 100 ).'%"></div>
         </div>
       </div>
-      <p>'.Wealth.': <span class="out">'.number_format($character->getCoins(), 0, ',', '.').Coins.'</span></p>
+      <p>'.Wealth.': <span class="out">'.number_format($character->getCoins(), 0, ',', '.').Coins.'</span><br>
+      '.Premium_wealth.': <span class="out">'.number_format( $character->getPremium(), 0, ',', '.' ).'</span></p>
     </div>
     <p>'.Welcome.' <b>'.$character->getName().'</b>.</p>';
     $buildings = Array( 'melee', 'ranged', 'workshop'/*, 'clinic', 'faction'*/ );

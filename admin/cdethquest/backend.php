@@ -74,9 +74,14 @@ $smmenu = Array(  //Sub-menus
 <link rel="stylesheet" href="<?php echo $site->getBaseroot().'admin/'.$module->getFolder().'/css/'.$site->getDevice().'.css'; ?>" type="text/css">
 <script type="text/javascript" src="<?php echo $site->getBaseroot().'admin/'.$module->getFolder().'/'; ?>js/dethquest.js"></script>
 <script>
-  backend = new Backend ("<?php echo $site->getBaseroot().'admin/'.$module->getFolder().'/'; ?>", "<?php echo $site->getBaseroot(); ?>", "<?php echo $module->getUrl(); ?>", "<?php echo $_SESSION['lang']; ?>", "<?php echo $dethuser->getFprint(); ?>", "<?php echo $_SESSION['username']; ?>");
+  var script = "<?php echo $site->getBaseroot().'admin/'.$module->getFolder().'/'; ?>";
+  var root = "<?php echo $site->getBaseroot(); ?>";
+  var module = "<?php echo $module->getUrl(); ?>";
+  var lang = "<?php echo $_SESSION['lang']; ?>";
+  var fprint = "<?php echo $dethuser->getFprint(); ?>";
+  var username = "<?php echo $_SESSION['username']; ?>";
+  backend = new Backend( script, root, module, lang, fprint, username);
   setTimeout(function(){ $("#wrapper").animate({ height:$("#main").height(), opacity:1 }, backend.speed); }, backend.speed);
-  
 </script>
 <div id="<?php echo mod.'dethquest'; ?>">  
   <h1 class="dethtitle"><?php echo $module->getName(); ?></h1>  
@@ -141,7 +146,7 @@ $smmenu = Array(  //Sub-menus
       </div>
     </div>
   </div>  
-<div class="version">DethQuest v15.11.18</div>
+<div class="version">DethQuest v15.11.24</div>
 </div>
 <?php
 if( $site->getDevice() != 'desktop' ){

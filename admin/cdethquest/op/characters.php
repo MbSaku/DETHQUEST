@@ -89,10 +89,12 @@ if (!isset($_POST['character'])){
   if( isset( $_POST['name'] )
   and isset( $_POST['health'] )
   and isset( $_POST['level'] )
-  and isset( $_POST['coins'] ) ){
+  and isset( $_POST['coins'] ) 
+  and isset( $_POST['premium'] ) ){
     $character->setName( $_POST['name'] );
     $character->setHealth( $_POST['health'] );
     $character->setCoins( $_POST['coins'] );
+    $character->setPremium( $_POST['premium'] );
     if (isset($_POST['delete'])){
       echo $character->delete();
     }else{
@@ -140,7 +142,8 @@ if (!isset($_POST['character'])){
         '.Experience.': <b>'.$character->getExperience().' / '.$character->expNextLevel().'</b>'; 
       ?></p>
       <p><?php 
-        echo Wealth.': <span class="out">'.number_format($character->getCoins(), 0, ',', '.').Coins.'</span>'; 
+        echo Wealth.': <span class="out">'.number_format($character->getCoins(), 0, ',', '.').Coins.'</span><br>
+        '.Premium_wealth.': <span class="out">'.number_format( $character->getPremium(), 0, ',', '.' ).'</span>'; 
       ?></p>
       <div class="charstats">
         <div class="stat">
@@ -347,6 +350,8 @@ if (!isset($_POST['character'])){
   <input type="number" style="width:6em" name="level" value="<?php echo $character->getLevel(); ?>"></p>
   <p class="pinput"><?php echo Wealth; ?>:<br>
   <input type="number" style="width:6em" name="coins" value="<?php echo $character->getCoins(); ?>"></p>
+  <p class="pinput"><?php echo Premium_wealth; ?>:<br>
+  <input type="number" style="width:6em" name="premium" value="<?php echo $character->getPremium(); ?>"></p>
   <p><input type="submit" value="<?php echo Save_character; ?>">
   <input type="checkbox" name="delete" value="1"><?php echo Delete_character; ?></p>
   </form>

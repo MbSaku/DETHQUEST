@@ -38,6 +38,7 @@ define('Add_data', "Add");
 define('Delete_data', "Delete");
 define('No_data_to_show', "No registers found");
 define('Coins', "¥");
+define('Premium_wealth', " Palladium");
 define('Premium_coins', " palladium crystals");
 define('Select_item', "Select item");
 define('Ammo', "Ammo");

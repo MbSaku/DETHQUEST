@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `cdeth_characters` (
   `constitution` int(11) NOT NULL,
   `intelligence` int(11) NOT NULL,
   `coins` int(11) NOT NULL,
+  `premium` int(11) NOT NULL,
   `experience` int(11) NOT NULL,
   `kills` int(11) NOT NULL,
   `deaths` int(11) NOT NULL,

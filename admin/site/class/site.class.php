@@ -25,13 +25,13 @@ class Site {
  * CONSTRUCTOR
  */
  
-  public function __construct($sqlparams, $debug = false){
+  public function __construct( $sqlparams, $debug = false ){
     $this->microini = microtime();
     $this->debug = $debug;
     $pathstr = '';
-    $this->datalink = new Datalink($sqlparams, $debug);  //Database connection (debug)
-    if (!$this->isInstalled()){
-      $this->datalink->sqlDump('admin/site/install/install.sql');
+    $this->datalink = new Datalink( $sqlparams, $debug );  //Database connection (debug)
+    if( !$this->isInstalled() ){
+      $this->datalink->sqlDump( 'admin/site/install/install.sql' );
     }
     $this->loadLanguage();
     $this->loadPath();
@@ -40,17 +40,16 @@ class Site {
     $this->loadAppearance();
     $browser = $this->checkBrowser();
     $this->browser = $browser['name'].' '.$browser['version'].' ('.$browser['platform'].')';
-    if (!isset ($this->path[0])
-    or $this->path[0] == $_SERVER['HTTP_HOST']){
+    if( !isset( $this->path[0] )
+    or $this->path[0] == $_SERVER['HTTP_HOST'] ){
       $this->path[0] = 'home';
-      header('Location: '.$this->getBaselink().'/home', true, 301);  //Redirecting.
+      header( 'Location: '.$this->getBaselink().'/home', true, 301 );  //Redirecting.
       exit();
     }
-    //$this->device = 'mobile';
-    if ($this->debug){
+    if( $this->debug ){
       echo "
       <script>console.log('DEVICE: ".$this->device."');</script>";
-      foreach ($this->path as $key => $value){
+      foreach( $this->path as $key => $value ){
         echo "
         <script>console.log('PATH: ".$key." => ".$value."');</script>";
       }
@@ -67,86 +66,98 @@ class Site {
   public function getTitle(){
     return $this->title;
   }
+  public function setTitle( $string ){
+    $this->title = $string;
+  }
+  
   public function getKeywords(){
     return $this->keywords;
   }
+  public function setKeywords( $text ){
+    $this->keywords = $text;
+  }
+  
   public function getFooter(){
     return $this->footer;
   }
+  public function setFooter( $text ){
+    $this->footer = $text;
+  }
+  
   public function getDevice(){
     return $this->device;
   }
+  public function setDevice( $string ){
+    $this->device = $string;
+  }
+  
   public function getStyle(){
     return $this->style;
   }
+  public function setStyle( $string ){
+    $this->style = $string;
+  }
+  
   public function getMaintenance(){
     return $this->maintenance;
   }
+  public function setMaintenance( $boolean ){
+    $this->maintenance = $boolean;
+  }
+  
   public function getMaintenancetext(){
     return $this->maintenancetext;
   }
+  public function setMaintenancetext( $text ){
+    $this->maintenancetext = $text;
+  }
+  
   public function getBaseroot(){
     return $this->baseroot;
   }
+  
   public function getBaselink(){
     return $this->baselink;
   }
+  
   public function getBrowser(){
     return $this->browser;
   }
+  
   public function getPath(){
     return $this->path;
   }
+  
   public function getAdmin(){
     return $this->admin;
   }
+  
   public function getFreereg(){
     return $this->freereg;
   }
+  public function setFreereg( $boolean ){
+    $this->freereg = $boolean;
+  }
+  
   public function getDatalink(){
     return $this->datalink;
   }
+  public function setDatalink( $datalink ){
+    $this->datalink = $datalink;
+  }
+  
   public function getForcedLang(){
     return $this->forcedLang;
   }
+  
   public function getToken(){
     return $this->token;
   }
+  
   public function getDebug(){
     return $this->debug;
   }
   
-/*
- *SETTERS 
- */
- 
-  public function setTitle($title){
-    $this->title = $title;
-  }
-  public function setKeywords($keywords){
-    $this->keywords = $keywords;
-  }
-  public function setFooter($footer){
-    $this->footer = $footer;
-  }
-  public function setDevice($device){
-    $this->device = $device;
-  }
-  public function setStyle($style){
-    $this->style = $style;
-  }
-  public function setMaintenance($maintenance){
-    $this->maintenance = $maintenance;
-  }
-  public function setMaintenancetext($maintenancetext){
-    $this->maintenancetext = $maintenancetext;
-  }
-  public function setFreereg($freereg){
-    $this->freereg = $freereg;
-  }
-  public function setDatalink($datalink){
-    $this->datalink = $datalink;
-  }
   public function getModfiles(){
     return $this->modfiles;
   }
@@ -156,16 +167,16 @@ class Site {
  */
  
   public function loadToken(){
-    if (!$this->isConfigured()){
+    if( !$this->isConfigured() ){
       $this->token = 'config';
     }else{
-      if ($this->getAdmin() != ''){
+      if( $this->getAdmin() != '' ){
         $this->token = 'backend';
       }else{
         $query = 'select id 
         from int_admin
         where url="'.$this->path[0].'"';
-        if ($this->datalink->dbQuery($query, 'rows') > 0){
+        if( $this->datalink->dbQuery( $query, 'rows' ) > 0 ){
           $this->token = 'frontend';
         }
       }
@@ -174,7 +185,7 @@ class Site {
   
   public function loadLangfile(){
     $requested = 'lib/lang/'.$_SESSION['lang'].'.php';
-    if (file_exists ($requested)){
+    if( file_exists( $requested ) ){
       $file = $requested;
     }else{
       $file = 'lib/lang/en.php';
@@ -182,18 +193,18 @@ class Site {
     return $file;
   }
 
-  public function dirList($directory){
-    $results = array ();  //Files and folder names
-    $files = array ();    //Useful file names at the end of execution
-    if (is_dir($directory)){
-      $results = scandir ($directory);
+  public function dirList( $directory ){
+    $results = array();  //Files and folder names
+    $files = array();    //Useful file names at the end of execution
+    if( is_dir( $directory ) ){
+      $results = scandir ( $directory );
     }
-    foreach ($results as $file){
-      if ($file != '.' && $file != '..'){ //Not significant used folder symbols
+    foreach( $results as $file ){
+      if( $file != '.' and $file != '..' ){ //Not significant used folder symbols
         $files[] = $file;
       }
     }
-    sort ($files);
+    sort( $files );
     return $files;
   }
 
@@ -211,14 +222,14 @@ class Site {
           $_POST[$key] = str_replace ("'", '&#39;', $_POST[$key]);
       }
       $value = $_POST[$key];
-      if ($this->debug){
-        if ($key == 'code'){
+      if( $this->debug){
+        if( $key == 'code'){
           $value = '<html code>';
         }
         echo "
         <script>console.log('POST: ".$key." => ".$value."')</script>";
       }
-      if ($key == 'password'){
+      if( $key == 'password'){
         $value = '****';
       }
       $log .= 'POST['.$key.'] => '.$value."\r\n";
@@ -226,15 +237,15 @@ class Site {
     foreach ($_GET as $key => $value){
       $_GET[$key] = str_replace (' ', '_', $_GET[$key]);
       $_GET[$key] = str_replace (array ('"', "'", ",", ";","="), '', $_GET[$key]);
-      if ($this->debug){
+      if( $this->debug){
         echo "
         <script>console.log('GET: ".$key." => ".$_GET[$key]."')</script>";
       }
       $log .= 'GET['.$key.'] => '.$value."\r\n";
     }
-    if (isset($_FILES)){
+    if( isset($_FILES)){
       foreach ($_FILES as $key => $value){
-        if ($this->debug){
+        if( $this->debug){
           echo "
           <script>console.log('FILES: ".$key."')</script>";
         }
@@ -242,22 +253,22 @@ class Site {
       }
     }
     foreach ($this->path as $key => $value){
-      if ($value != ''){
+      if( $value != ''){
         $log .= 'PATH: '.$key.' => '.$value."\r\n";
       }
     }
-    if (isset($_POST['lang'])){
+    if( isset($_POST['lang'])){
       $_SESSION['lang'] = $_POST['lang'];
     }
-    if ($this->debug){
+    if( $this->debug){
       foreach ($_SESSION as $k => $v){
-        if (!is_array($v)){
+        if( !is_array($v)){
           echo "
           <script>console.log('SESSION: ".$k." => ".$v."')</script>";
         }
       }
     }
-    if (count($_POST) > 0){
+    if( count($_POST) > 0){
       $this->addLog($log);
     }
   }
@@ -268,7 +279,7 @@ class Site {
     value
     from int_metas
     limit 10';
-    if ($result = $this->datalink->dbQuery($query, 'result')){
+    if( $result = $this->datalink->dbQuery($query, 'result')){
       foreach ($result as $variable){
         $metas[$variable[0]] = $variable[1];
       }
@@ -278,11 +289,11 @@ class Site {
 
   public function saveMetas($metas){
     $errors = '';
-    if (count($metas) > 0){
+    if( count($metas) > 0){
       $this->datalink->dbQuery('truncate int_metas', 'query');
       $i = 1;
       foreach ($metas as $name => $value){
-        if ($i <= 10
+        if( $i <= 10
         and $name != ''
         and $value != ''){
           $query = 'insert into int_metas (
@@ -292,7 +303,7 @@ class Site {
           "'.$name.'", 
           "'.$value.'"
           )';
-          if ($this->datalink->dbQuery($query, 'query') <= 0){
+          if( $this->datalink->dbQuery($query, 'query') <= 0){
             $error = Meta_variables_not_saved;
           }
         }
@@ -315,7 +326,7 @@ class Site {
     $mwidth = 1024;  //Maximum size of uploaded pictures.
     $mheight = 768;
     $imagename = str_replace (array (' ', "'"), '_', $file['name']); //Store relevant information
-    if ($file['error'] > 0) {
+    if( $file['error'] > 0) {
       switch ($file['error']){
       case 1:
       case 2:
@@ -339,23 +350,23 @@ class Site {
         case 'PNG':
           $image = new Image($file['tmp_name']);
           $imageinfo = (getimagesize ($file['tmp_name']));
-          if ($imageinfo[0] > $imageinfo[1] 
+          if( $imageinfo[0] > $imageinfo[1] 
           and $imageinfo[0] > $mwidth){
             $image->resizeToWidth($mwidth);  //Picture width
           }
-          if ($imageinfo[1] > $imageinfo[0] 
+          if( $imageinfo[1] > $imageinfo[0] 
           and $imageinfo[1] > $mheight){
             $image->resizeToHeight($mheight);  //Picture height
           }
           $validate = false;
           while (!$validate){
-            if (file_exists ('uploads/'.$dir.'/'.$imagename)){
+            if( file_exists ('uploads/'.$dir.'/'.$imagename)){
               $imagename = '-'.$imagename;
             }else{
               $validate = true;
             }
           }
-          if ($image->save ('uploads/'.$dir.'/'.$imagename)){
+          if( $image->save ('uploads/'.$dir.'/'.$imagename)){
             $ret = $imagename;
             chmod ('uploads/'.$dir.'/'.$imagename, $this->modfiles);  //Uploading done
           }
@@ -368,7 +379,7 @@ class Site {
   public function fileUpload ($file, $dir) {
     $ret = '';
     $nom = str_replace (array (' ', "'"), '_', $file['name']); //Store relevant information
-    if ($file['error'] > 0) {
+    if( $file['error'] > 0) {
       switch ($file['error']){
       case 1:
       case 2:
@@ -384,13 +395,13 @@ class Site {
     }else{
       $validar = false;
       while (!$validar){
-        if (file_exists ('uploads/'.$dir.'/'.$nom)){
+        if( file_exists ('uploads/'.$dir.'/'.$nom)){
           $nom = '-'.$nom;
         }else{
           $validar = true;
         }
       }
-      if (move_uploaded_file($file['tmp_name'], 'uploads/'.$dir.'/'.$nom)){
+      if( move_uploaded_file($file['tmp_name'], 'uploads/'.$dir.'/'.$nom)){
         $ret = $nom;
       }
     }
@@ -402,7 +413,7 @@ class Site {
     $query = 'select distinct lang, name
     from int_lang';
     $result = $this->datalink->dbQuery($query, 'result');
-    if (count($result) > 1){
+    if( count($result) > 1){
       $html .= '
       <form name="language" method="post" action="">
       <ul class="langmenu">';
@@ -424,19 +435,19 @@ class Site {
     where active=1
     and shortcut=1
     order by corder asc';
-    if ($result = $this->datalink->dbQuery($query, 'result')){
-      if (count($result) > 0){
+    if( $result = $this->datalink->dbQuery($query, 'result')){
+      if( count($result) > 0){
         $html .= '
         <ul class="modulemenu">';
         foreach ($result as $row){
           $module = new Module($this->datalink, $row[0]);
           $html .= '<li><a href="'.$this->getBaselink().'/'.$module->getUrl().'"';
-          if (isset ($this->path[0])
+          if( isset ($this->path[0])
           and $this->path[0] == $module->getUrl()){
             $html .= ' class="active"';
           }
           $html .= '>';
-          if ($_SESSION['logged']
+          if( $_SESSION['logged']
           and $module->getUrl() == 'login'){
             $html .= '<b>'.$_SESSION['username'].'</b>';
           }else{
@@ -458,18 +469,18 @@ class Site {
     where menu=1
     and father=0
     order by corder asc';
-    if ($result = $this->datalink->dbQuery($query, 'result')){
-      if (count($result) > 0){
+    if( $result = $this->datalink->dbQuery($query, 'result')){
+      if( count($result) > 0){
         $html .= '
         <ul class="contentmenu">';
         foreach ($result as $row){
           $dad = new Content($this->datalink, $row[0]);
           $html .= '<li class="hoverable"><a ';
-          if ($this->path[0] == $dad->getUrl()
+          if( $this->path[0] == $dad->getUrl()
           or $dad->isFatherOf($this->path[0])){
             $html .= ' class="active"';
           }
-          if (!$dad->hasChildren()){
+          if( !$dad->hasChildren()){
             $html .= ' href="'.$this->baselink.'/'.$dad->getUrl().'"';
           }
           $html .= '>'.$dad->getTitle().'</a>';
@@ -477,14 +488,14 @@ class Site {
           where menu=1
           and father="'.$dad->getId().'"
           order by corder asc';
-          if ($subresult = $this->datalink->dbQuery($query, 'result')){
-            if (count($result) > 0){
+          if( $subresult = $this->datalink->dbQuery($query, 'result')){
+            if( count($result) > 0){
               $html .= '
               <div class="subcontentmenu">';
               foreach ($subresult as $subrow){
                 $child = new Content($this->datalink, $subrow[0]);
                 $html .= '<p><a href="'.$this->baselink.'/'.$child->getUrl().'"';
-                if ($this->path[0] == $child->getUrl()){
+                if( $this->path[0] == $child->getUrl()){
                   $html .= ' class="active"';
                 }
                 $html .= '>'.$child->getTitle().'</a></p>';
@@ -506,12 +517,12 @@ class Site {
     from int_admin
     where active=1
     order by corder asc';
-    if ($result = $this->datalink->dbQuery($query, 'result')){
-      if (count($result) > 0){
+    if( $result = $this->datalink->dbQuery($query, 'result')){
+      if( count($result) > 0){
         $html .= '<ul class="privatemenu">';
         foreach ($result as $row){
           $module = new Module($this->datalink, $row[0]);
-          if ($user->checkPermission($module->getId())){
+          if( $user->checkPermission($module->getId())){
             $html .= '
             <li><a href="'.$this->getBaselink().'?adm='.$module->getUrl().'"';
             if( file_exists( 'admin/'.$module->getFolder().'/icon.png' ) ){
@@ -532,7 +543,7 @@ class Site {
     value
     from int_metas
     limit 10';
-    if ($result = $this->datalink->dbQuery($query, 'result')){
+    if( $result = $this->datalink->dbQuery($query, 'result')){
       foreach ($result as $meta){
         $html .= '
         <meta name="'.$meta[0].'" content="'.$meta[1].'">';
@@ -558,7 +569,7 @@ class Site {
     "'.$this->getMaintenancetext().'",
     "'.$this->getFreereg().'"
     )';
-    if ($this->datalink->dbQuery($query, 'query') <= 0){
+    if( $this->datalink->dbQuery($query, 'query') <= 0){
        $error = '<p class="error">'.Site_configuration_not_saved.'</p>';
     }
     return $error;
@@ -588,7 +599,7 @@ class Site {
   
   public function shut(){
     $this->datalink->closeDb();
-    if ($this->debug){
+    if( $this->debug){
       echo "<script>console.log('TIME TAKEN: ".(microtime() - $this->microini)."s');</script>";
     }
   }
@@ -602,7 +613,7 @@ class Site {
     $query = 'select lang, name
     from int_lang
     where lang="'.$reference.'"';
-    if ($this->datalink->dbQuery($query, 'rows') > 0){
+    if( $this->datalink->dbQuery($query, 'rows') > 0){
       $query = 'update int_lang
       set name="'.$name.'"
       where lang="'.$reference.'"';
@@ -615,7 +626,7 @@ class Site {
       "'.$name.'"
       )';
     }
-    if ($this->datalink->dbQuery($query, 'query') <= 0){
+    if( $this->datalink->dbQuery($query, 'query') <= 0){
       $errors .= Language_not_saved;
     }
     return $errors;
@@ -624,7 +635,7 @@ class Site {
   public function forceLanguage($reference = ''){
     $query = 'update int_lang set forced=0';
     $this->datalink->dbQuery($query, 'query');
-    if ($reference != ''){
+    if( $reference != ''){
       $query = 'update int_lang set forced=1
       where lang="'.$reference.'"';
       $this->datalink->dbQuery($query, 'query');
@@ -637,10 +648,10 @@ class Site {
     $query = 'select lang, name, forced
     from int_lang
     order by name asc';
-    if ($this->getDatalink()->dbQuery($query, 'rows') > 1){
+    if( $this->getDatalink()->dbQuery($query, 'rows') > 1){
       $query = 'delete from int_lang
       where lang="'.$reference.'"';
-      if ($this->datalink->dbQuery($query, 'query') <= 0){
+      if( $this->datalink->dbQuery($query, 'query') <= 0){
         $errors = Language_could_not_be_deleted;
       }
     }else{
@@ -651,7 +662,7 @@ class Site {
   
   public function addTheme($uploadedzip){
     $errors = '';
-    if ($uploadedzip['error'] > 0) {
+    if( $uploadedzip['error'] > 0) {
       switch ($uploadedzip['error']){
         case 1:
         case 2:
@@ -675,10 +686,10 @@ class Site {
           $zip->open($uploadedzip['tmp_name']);
           $basevalue = explode ('/', $zip->getNameIndex(0));
           $basevalue = $basevalue[0];
-          if ($this->debug){
+          if( $this->debug){
             echo "<script>console.log('THEME-ZIP[0] ".$basevalue."');</script>";
           }
-          if ($zip->getFromName($basevalue.'/'.$basevalue.'.php')
+          if( $zip->getFromName($basevalue.'/'.$basevalue.'.php')
           and $zip->getFromName($basevalue.'/icon.png')
           and $zip->getFromName($basevalue.'/desktop.css')
           and $zip->getFromName($basevalue.'/mobile.css')
@@ -692,7 +703,7 @@ class Site {
              "'.$basevalue.'",
              "0"
              )';
-             if ($this->getDatalink()->dbQuery($query, 'query') > 0){
+             if( $this->getDatalink()->dbQuery($query, 'query') > 0){
                $zip->extractTo('styles/');
              }else{
                $errors .= Theme_not_installed;
@@ -705,7 +716,7 @@ class Site {
             $errors .= Zip_theme_format_not_correct;
             break;
       }
-      if ($errors != ''){
+      if( $errors != ''){
         return '<p class="error">'.$errors.'</p>';
       }else{
         return '<p class="fine">'.Theme_installed.'</p>';
@@ -714,9 +725,9 @@ class Site {
   }
   
   public function delTheme($themefolder){
-    if ($themefolder != ''){
+    if( $themefolder != ''){
       $this->rrmdir('styles/'.$themefolder);
-      if (!file_exists('styles/'.$themefolder)){
+      if( !file_exists('styles/'.$themefolder)){
         return '<p class="fine">'.Theme_deleted.'</p>';
       }else{
         return '<p class="error">'.Theme_was_not_deleted.'</p>';
@@ -727,7 +738,7 @@ class Site {
 
   public function addModule($uploadedzip){
     $errors = '';
-    if ($uploadedzip['error'] > 0) {
+    if( $uploadedzip['error'] > 0) {
       switch ($uploadedzip['error']){
         case 1:
         case 2:
@@ -751,17 +762,17 @@ class Site {
           $zip->open($uploadedzip['tmp_name']);
           $basevalue = explode ('/', $zip->getNameIndex(0));
           $basevalue = $basevalue[0];
-          if ($this->debug){
+          if( $this->debug){
             echo "<script>console.log('MODULE-ZIP[0] ".$basevalue."');</script>";
           }
-          if ($zip->getFromName($basevalue.'/backend.php')
+          if( $zip->getFromName($basevalue.'/backend.php')
           and $zip->getFromName($basevalue.'/frontend.php')
           and $zip->getFromName($basevalue.'/lang/en.php')
           and $zip->getFromName($basevalue.'/install/install.sql')
           and $zip->getFromName($basevalue.'/install/uninstall.sql')){  //Checking existence of main needed files
             $query = 'select corder from int_admin order by corder desc limit 1';
             $result = $this->datalink->dbQuery($query, 'result');
-            if (isset ($result[0])
+            if( isset ($result[0])
             and $row = $result[0]){
               $order = $row[0];
             }else{
@@ -786,7 +797,7 @@ class Site {
             "'.($order + 1).'",
             "0"
             )';
-            if ($this->getDatalink()->dbQuery($query, 'query') > 0){
+            if( $this->getDatalink()->dbQuery($query, 'query') > 0){
               $zip->extractTo('admin/');
               mkdir ('uploads/'.$basevalue);
               $this->datalink->sqlDump('admin/'.$basevalue.'/install/install.sql');
@@ -801,7 +812,7 @@ class Site {
             $errors .= Zip_module_format_not_correct;
             break;
       }
-      if ($errors != ''){
+      if( $errors != ''){
         return '<p class="error">'.$errors.'</p>';
       }else{
         return '<p class="fine">'.Module_installed.'</p>';
@@ -810,11 +821,11 @@ class Site {
   }
   
   public function delModule($modulefolder){
-    if ($modulefolder != ''){
+    if( $modulefolder != ''){
       $this->datalink->sqlDump('admin/'.$modulefolder.'/install/uninstall.sql');
       $this->rrmdir('admin/'.$modulefolder);
       $this->rrmdir('uploads/'.$modulefolder);
-      if (!file_exists('admin/'.$modulefolder)
+      if( !file_exists('admin/'.$modulefolder)
       and !file_exists('uploads/'.$modulefolder)){
         return '<p class="fine">'.Module_deleted.'</p>';
       }else{
@@ -829,7 +840,7 @@ class Site {
     from int_lang
     where lang="'.$_SESSION['lang'].'"';
     $result = $this->datalink->dbQuery($query, 'result');
-    if (isset($result[0])){
+    if( isset($result[0])){
       return $result[0][0];
     }else{
       return '?';
@@ -838,7 +849,7 @@ class Site {
   
   public function adminEmail(){
     $result = $this->datalink->dbQuery('select email from int_user where charge=1 limit 1', 'result');
-    if (isset ($result[0])){
+    if( isset ($result[0])){
       return $result[0][0]; //Administrator Email
     }else{
       return '?';
@@ -868,7 +879,7 @@ class Site {
     from int_information
     limit 1';
     $result = $this->datalink->dbQuery($query, 'result');
-    if (isset($result[0])
+    if( isset($result[0])
     and count($result[0]) == 5){
       $this->title = $result[0][0];
       $this->footer = $result[0][1];
@@ -878,7 +889,7 @@ class Site {
     }
     switch($this->token){
       case 'content':
-        if (isset($this->path[0])
+        if( isset($this->path[0])
         and $this->path[0] != 'home'){
           $query = 'select int_content_trad.title
           from int_content_trad, int_content
@@ -886,21 +897,21 @@ class Site {
           and int_content.id=int_content_trad.id
           and int_content_trad.lang="'.$_SESSION['lang'].'"';
           $result = $this->datalink->dbQuery($query, 'result');
-          if (isset($result[0])
+          if( isset($result[0])
           and $row = $result[0]){
             $this->title = $row[0].' - '.$this->title;
           }
         }
       break;
       case 'frontend':
-        if (isset($this->path[0])){
+        if( isset($this->path[0])){
           $query = 'select int_admin_trad.name
           from int_admin_trad, int_admin
           where int_admin.url="'.$this->path[0].'"
           and int_admin.id=int_admin_trad.id
           and int_admin_trad.lang="'.$_SESSION['lang'].'"';
           $result = $this->datalink->dbQuery($query, 'result');
-          if (isset($result[0])
+          if( isset($result[0])
           and $row = $result[0]){
             $this->title = $row[0].' - '.$this->title;
           }
@@ -914,12 +925,12 @@ class Site {
     from int_lang 
     where forced=1';
     $result = $this->datalink->dbQuery($query, 'result');
-    if (isset($result[0])){
+    if( isset($result[0])){
       $this->forcedLang = $result[0][0];
     }
-    if (!isset ($_SESSION['lang']) 
+    if( !isset ($_SESSION['lang']) 
     or !$this->langExists($_SESSION['lang'])){
-      if ($this->forcedLang != ''){
+      if( $this->forcedLang != ''){
         $_SESSION['lang'] = $this->forcedLang;  //Force a language on first visit
       }else{
         $_SESSION['lang'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);  //Browser preference as default language
@@ -938,20 +949,20 @@ class Site {
     where active=1
     limit 1';
     $result = $this->datalink->dbQuery($query, 'result');
-    if (isset($result[0])){
+    if( isset($result[0])){
       $this->style = $result[0][0];
       $device = new DeviceDetector();
-      if ($device->isMobile()){
+      if( $device->isMobile()){
         $this->device =  'mobile';
       } 
-      if ($device->isTablet()){
+      if( $device->isTablet()){
         $this->device =  'tablet';
       }
     }
   }
 
   private function loadPath(){
-    if (isset ($_SERVER['HTTPS']) 
+    if( isset ($_SERVER['HTTPS']) 
     and $_SERVER['HTTPS'] != ''){
       $protocol = 'https';
     }else{
@@ -961,7 +972,7 @@ class Site {
     $this->baselink = $protocol.'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];  //Base site link.
     $pathstr = str_replace ($_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'/', '', $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);  //Url asked
     $this->path = explode ('/', $pathstr);
-    if (isset ($_GET['adm']) 
+    if( isset ($_GET['adm']) 
     and isset ($_SESSION['logged']) 
     and $_SESSION['logged'] == 1){  //Logged in
       $this->admin = $_GET['adm'];  //Refered module url
