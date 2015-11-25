@@ -255,15 +255,15 @@ if (!isset($_POST['class'])){
           break;
         }
         echo '<div class="editionitem">
-        <div class="field">';
-        if( $item->getIcon() != '' ){
-          echo '<img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'">';
-        }
-        echo '<input type="checkbox" name="'.$type.'-'.$item->getId().'" class="equipment"';
+        <div class="field"><input type="checkbox" name="'.$type.'-'.$item->getId().'" class="equipment"';
         if( $class->hasItem( $type, $item->getId() ) ){
           echo ' checked';
         }
-        echo ' value="'.$item->getPrice().'">'.$item->getName().' <b>'.$item->getPrice().Coins.'</b></div>
+        echo ' value="'.$item->getPrice().'">'.$item->getName().' <b>'.$item->getPrice().Coins.'</b><br>';
+        if( $item->getIcon() != '' ){
+          echo '<img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'"><br>';
+        }
+        echo $item->getPremium().Premium_coins.'</div>
         </div>';
       }
       echo '</div>
@@ -283,15 +283,15 @@ if (!isset($_POST['class'])){
       }
       $item = new Weapon( $site->getDatalink(), $row[0] );
       echo '<div class="editionitem">
-      <div class="field">';
-      if( $item->getIcon() != '' ){
-        echo '<img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'">';
-      }
-      echo '<input type="checkbox" name="weapon-'.$item->getId().'" class="equipment"';
+      <div class="field"><input type="checkbox" name="weapon-'.$item->getId().'" class="equipment"';
       if($class->hasItem( 'weapon' , $item->getId() ) ){
         echo ' checked';
       }
-      echo ' value="'.$item->getPrice().'">'.$item->getName().' ('.$item->getHands().' '.Item_hands.') <b>'.$item->getPrice().Coins.'</b></div>
+      echo ' value="'.$item->getPrice().'">'.$item->getName().' ('.$item->getHands().' '.Item_hands.') <b>'.$item->getPrice().Coins.'</b><br>';
+      if( $item->getIcon() != '' ){
+        echo '<img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'"><br>';
+      }
+      echo $item->getPremium().Premium_coins.'</div>
       </div>';
     }
     echo '</div>

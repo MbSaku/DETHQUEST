@@ -12,11 +12,8 @@ if (isset($_REQUEST['filter'])){
 $regspag = 10;
 ?>
 <fieldset><legend><?php echo $module->getName().' - '.Edition; ?></legend>
-  
   <p><?php echo Content_help; ?></p>
-  
   <p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>
-  
 <?php
 if (!isset($_GET['content'])){
   if (isset($_POST['mcontent'])){
@@ -29,17 +26,13 @@ if (!isset($_GET['content'])){
     }
   }
 ?>
-
-  <p><a href="<?php echo $basiclink.'&filter='.$filter.'&pag='.$pag.'&content=0'; ?>"><input type="button" value="<?php echo Add_new_content; ?>"></a></p>
-
   <form name="usersearch" method="post" action="">
     <p class="pinput"><?php echo Url_filter; ?><br>
     <input type="text" name="filter" value="<?php echo $filter; ?>">
     <input type="submit" value="<?php echo Filter_content; ?>"></p>
   </form>
-
+  <p class="pinput"><a href="<?php echo $basiclink.'&filter='.$filter.'&pag='.$pag.'&content=0'; ?>"><input type="button" value="<?php echo Add_new_content; ?>"></a></p>
   <div class="editiontitle"><?php echo Contents; ?></div>
-
   <?php
   $query = 'select id from int_content where url like "%'.$filter.'%" order by corder asc';
   $numpags = ceil ($site->getDatalink()->dbQuery($query, 'rows') / $regspag);
@@ -121,17 +114,12 @@ if (!isset($_GET['content'])){
   }
 ?>
   <h2><?php echo Editing_content.' '.$content->getTitle(); ?></h2>
-  
   <p><a href="<?php echo $basiclink.'&filter='.$filter.'&pag='.$pag; ?>"><input type="button" value="<?php echo Back_to_contents; ?>"></a></p>
-  
   <form name="content" method="post" action="<?php echo $basiclink.'&filter='.$filter.'&pag='.$pag.'&content='.$content->getUrl(); ?>">
-    
     <p class="pinput"><?php echo Content_title; ?><br>
     <input type="text" name="title" value="<?php echo $content->getTitle(); ?>"></p>
-    
     <p class="pinput"><?php echo Content_url; ?><br>
     <input type="text" name="url" value="<?php echo $content->getUrl(); ?>"></p>
-    
     <p class="pinput"><?php echo Content_father; ?><br>
     <select name="father"><option value="0"><?php echo No_content_father; ?></option>
     <?php
@@ -147,7 +135,6 @@ if (!isset($_GET['content'])){
     }
     ?>
     </select></p>
-    
     <p><input type="checkbox" name="menu" value="true"
     <?php 
     if ($content->getMenu()){
@@ -155,26 +142,20 @@ if (!isset($_GET['content'])){
     }   
     echo '>'.Menu_appearance; 
     ?><br></p>
-    
     <p><?php echo Content_code; ?><br>
     <textarea name="code" class="tceditor"><?php echo $content->getCode(); ?></textarea></p>
-    
     <p><input type="submit" name="savecontent" value="<?php echo Content_save; ?>"></p>
-    
     <?php
     if ($content->getId() > 0){
       echo '<p><input type="submit" name="deletecontent" value="'.Content_delete.'"></p>';
     }
     ?>
-    
   </form>
 <?php
 }
 ?>
 </fieldset>
-
 <script type="text/javascript">
-
 tinymce.init({
   selector: "textarea.tceditor",
   plugins: [ "code link table image textcolor"],
@@ -194,5 +175,4 @@ foreach ($imgs as $k => $v){
     ],
   toolbar: "styleselect table | undo redo code | alignleft aligncenter alignright alignjustify bullist numlist outdent indent forecolor | image link unlink bold italic underline strikethrough subscript superscript selectall removeformat"
 });
-
 </script>

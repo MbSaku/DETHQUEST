@@ -1091,6 +1091,10 @@ textarea:hover {
   width:6em;
 }
 
+#cdethquest .inventory {
+  padding-bottom:10em;
+}
+
 /* LEVEL EDITOR */
 
 #cdethquest #texture-panel {
@@ -2141,7 +2145,8 @@ textarea:hover {
   border-top:0.1em solid #ffffff;
 }
 
-#cdethquest .shop-item {
+#cdethquest .shop-item,
+#cdethquest .inventory-item {
   width:12em;
   padding:0.5em;
   margin:0.5em;
@@ -2194,7 +2199,8 @@ textarea:hover {
   opacity:0;
 }
 
-#cdethquest .shop-item.hovered .item-text {
+#cdethquest .shop-item.hovered .item-text,
+#cdethquest .inventory-item.hovered .item-text {
   max-height:15em;
   opacity:1;
 }

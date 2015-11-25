@@ -30,7 +30,7 @@ if(("standalone" in window.navigator) && window.navigator.standalone){
 function setHoverables(){
   $( ".hoverable" ).each( function() {
     $( this ).click( function() {
-       $( this ).toggleClass( "hovered" );
+      $( this ).toggleClass( "hovered" );
     } );
   });
 }

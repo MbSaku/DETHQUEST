@@ -823,8 +823,10 @@ class PlayerCharacter extends DatabaseObject {
           $invrow->setMax( $item->getHitpoints() );
         break;
       }
-      if( $this->coins >= $item->getPrice() ){
+      if( $this->coins >= $item->getPrice() 
+      and $this->premium >= $item->getPremium() ){
         $this->coins = $this->coins - $item->getPrice();
+        $this->premium = $this->premium - $item->getPremium();
         $this->save();
         $invrow->save();
       }else{

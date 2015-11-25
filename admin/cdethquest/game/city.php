@@ -140,7 +140,11 @@ if( $dethuser->getCharacter() == 0 ){
         }
         echo '</div>
         <div class="item-name">'.$item->getName().'</div>
-        <div class="item-price"><b>'.$item->getPrice().Coins.'</b></div>
+        <div class="item-price"><b>'.$item->getPrice().Coins.'</b>';
+        if( $item->getPremium() > 0 ){
+          echo '<br><b>'.$item->getPremium().'</b> '.Premium_coins;
+        }
+        echo '</div>
         <div class="item-text">
         <form name="buyitem'.$item->getId().'" method="post" action="" onsubmit="event.preventDefault();backend.post(this,false)">
         <input type="hidden" name="type" value="'.$type.'">
@@ -179,5 +183,9 @@ if( $dethuser->getCharacter() == 0 ){
 }
 ?>
 <script type="text/javascript">
-  setHoverables();
+  $( "#thecity .hoverable" ).each( function() {
+    $( this ).click( function() {
+      $( this ).toggleClass( "hovered" );
+    } );
+  });
 </script>

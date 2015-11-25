@@ -79,7 +79,7 @@ and isset( $_POST['search'] ) ){
     if ($filter['search'] != ''){
       $query .= ' and data like "%'.$filter['search'].'%"';
     }
-    $query .= ' order by id desc';
+    $query .= ' order by id desc limit 500';
     $result = $site->getDatalink()->dbQuery($query, 'result');
     foreach ($result as $row){
       echo '<div class="log">
