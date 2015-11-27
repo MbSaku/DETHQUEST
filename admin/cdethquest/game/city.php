@@ -183,9 +183,5 @@ if( $dethuser->getCharacter() == 0 ){
 }
 ?>
 <script type="text/javascript">
-  $( "#thecity .hoverable" ).each( function() {
-    $( this ).click( function() {
-      $( this ).toggleClass( "hovered" );
-    } );
-  });
+  setHoverables( "#thecity .hoverable" );
 </script>

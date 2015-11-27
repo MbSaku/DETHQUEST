@@ -21,7 +21,7 @@ window.onload = function() {
   }
   if( $site->getDevice() != 'desktop' ){
     ?>
-    setHoverables();
+    setHoverables( ".hoverable" );
     <?php
   }
   ?>

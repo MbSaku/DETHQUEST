@@ -27,8 +27,8 @@ if(("standalone" in window.navigator) && window.navigator.standalone){
   },false);
 }
 
-function setHoverables(){
-  $( ".hoverable" ).each( function() {
+function setHoverables( selector ){
+  $( selector ).each( function() {
     $( this ).click( function() {
       $( this ).toggleClass( "hovered" );
     } );
