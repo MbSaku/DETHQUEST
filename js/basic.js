@@ -34,3 +34,21 @@ function setHoverables( selector ){
     } );
   });
 }
+
+function initiateTcEditors(){
+  while( tinymce.editors.length > 0 ){ 
+    tinymce.remove( tinymce.editors[0] ); 
+  }
+  tinymce.init( {
+    selector: "textarea.tceditor",
+    setup: function( editor ) {
+      editor.on( 'change', function () {
+        tinymce.triggerSave();
+      } );
+    },
+    plugins: [ "code link, textcolor"],
+    menu: "false",
+    height : 200,
+    toolbar: "styleselect | undo redo code | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | bold italic underline strikethrough subscript superscript forecolor | link unlink selectall removeformat"
+  } );
+}
