@@ -24,7 +24,7 @@ class Site {
 /*
  * CONSTRUCTOR
  */
- 
+  
   public function __construct( $sqlparams, $debug = false ){
     $this->microini = microtime();
     $this->debug = $debug;
@@ -58,7 +58,7 @@ class Site {
     }
     register_shutdown_function( 'shutdown', $this );
   }
-
+  
 /*
  * GETTERS
  */
@@ -854,6 +854,10 @@ class Site {
     }else{
       return '?';
     }
+  }
+  
+  public function dbQuery( $query, $type ){
+    return( $this->datalink->dbQuery( $query, $type ) );
   }
   
 /*

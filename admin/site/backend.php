@@ -39,4 +39,4 @@
   }
   ?>
 </div>
-<div class="version">Site v15.11.24</div>
+<div class="version">Site v15.12.09</div>

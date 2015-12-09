@@ -263,6 +263,10 @@ class Ajaxsite {
     return $files;
   }
 
+  public function dbQuery( $query, $type ){
+    return( $this->datalink->dbQuery( $query, $type ) );
+  }
+  
 /*
  * PRIVATE METHODS
  */
