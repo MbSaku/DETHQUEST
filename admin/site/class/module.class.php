@@ -113,7 +113,7 @@ class Module{
     return $this->url;
   }
   public function setUrl( $string ){
-    $this->string = $string;
+    $this->url = $string;
   }
   
   public function getOrder(){
@@ -147,16 +147,33 @@ class Module{
   public function saveConfig(){
     $errors = '';
     if( $this->id > 3 ){
-      $query = 'update int_admin set name="'.$this->name.'", url="'.$this->url.'", shortcut="'.$this->shortcut.'", corder="'.$this->order.'", active="'.$this->active.'" where id="'.$this->id.'"';
+      $query = 'update int_admin set 
+      name="'.$this->name.'", 
+      url="'.$this->url.'", 
+      shortcut="'.$this->shortcut.'", 
+      corder="'.$this->order.'", 
+      active="'.$this->active.'" 
+      where id="'.$this->id.'"';
       if( $this->datalink->dbQuery( $query, 'query' ) <= 0 ){
         $errors .= Module_configuration_not_saved;
       }
     }
     if( $this->isTranslated( $_SESSION['lang'] ) ){
-      $query = 'update int_admin_trad set name="'.$this->name.'" where lang="'.$_SESSION['lang'].'" and id="'.$this->id.'"';
+      $query = 'update int_admin_trad set 
+      name="'.$this->name.'" 
+      where lang="'.$_SESSION['lang'].'" 
+      and id="'.$this->id.'"';
       $this->datalink->dbQuery( $query, 'query' );
     }else{
-      $query = 'insert into int_admin_trad (id, lang, name) values ("'.$this->id.'", "'.$_SESSION['lang'].'", "'.$this->name.'")';
+      $query = 'insert into int_admin_trad (
+      id, 
+      lang, 
+      name
+      ) values (
+      "'.$this->id.'", 
+      "'.$_SESSION['lang'].'", 
+      "'.$this->name.'"
+      )';
       if( $this->datalink->dbQuery( $query, 'query' ) <= 0 ){
         $errors .= Module_not_translated;
       }

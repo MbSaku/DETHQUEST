@@ -12,6 +12,7 @@ include('admin/users/class/user.class.php');
 include('admin/users/class/email.class.php');
 include('admin/content/class/content.class.php');
 $site = new Site( $sqlparams );
+$site->getDatalink()->setDebug( true );
 include( $site->loadLangfile() );
 $user = new User( $site->getDatalink() );
 $site->inputCheck();

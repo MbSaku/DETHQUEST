@@ -23,44 +23,41 @@ and isset($_POST['confirmdeletion'])){
     echo $site->delModule($_POST['modulef']);
   }
 }
-if (isset($_POST['module'])
-and isset($_POST['name'])
-and isset($_POST['savemodule'])){
-  $moduled = new Module($site->getDatalink(), $_POST['module']);
-  $moduled->setName($_POST['name']);
-  if ($moduled->getId() > 3
-  and isset($_POST['url'])){
-    $moduled->setUrl($_POST['url']);
-    if (isset ($_POST['active'])){
-      $moduled->setActive(true);
+if( isset( $_POST['module'] )
+and isset( $_POST['name'] )
+and isset( $_POST['savemodule'] ) ){
+  $moduled = new Module( $site->getDatalink(), $_POST['module'] );
+  $moduled->setName( $_POST['name'] );
+  if( $moduled->getId() > 3
+  and isset( $_POST['url'] ) ){
+    $moduled->setUrl( $_POST['url'] );
+    if( isset( $_POST['active'] ) ){
+      $moduled->setActive( true );
     }else{
-      $moduled->setActive(false);
+      $moduled->setActive( false );
     }
-    if (isset ($_POST['shortcut'])){
-      $moduled->setShortcut(true);
+    if( isset( $_POST['shortcut'] ) ){
+      $moduled->setShortcut( true );
     }else{
-      $moduled->setShortcut(false);
+      $moduled->setShortcut( false );
     }
   }
   echo $moduled->saveConfig();
 }
-if (isset($_POST['module'])
-and isset($_POST['moveup'])){
-  $moduled = new Module($site->getDatalink(), $_POST['module']);
+if( isset( $_POST['module'] )
+and isset( $_POST['moveup'] ) ){
+  $moduled = new Module( $site->getDatalink(), $_POST['module'] );
   $moduled->moveUp();
 }
-if (isset($_POST['module'])
-and isset($_POST['movedown'])){
-  $moduled = new Module($site->getDatalink(), $_POST['module']);
+if( isset( $_POST['module'] )
+and isset( $_POST['movedown'] ) ){
+  $moduled = new Module( $site->getDatalink(), $_POST['module'] );
   $moduled->moveDown();
 }
 ?>
 <fieldset><legend><?php echo $module->getName().' - '.Modules; ?></legend>
-  
   <p><?php echo Modules_help; ?></p>
-  
   <p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>
-  
   <div class="editiontitle"><?php echo Activated_modules; ?></div>
   <?php
   $query = 'select id 
@@ -102,7 +99,6 @@ and isset($_POST['movedown'])){
     </div>';
   }
   ?>
-  
   <div class="editiontitle"><?php echo Installed_modules; ?></div>
   <?php
   $query = 'select id 
@@ -120,7 +116,8 @@ and isset($_POST['movedown'])){
     if( file_exists( 'admin/'.$moduled->getFolder().'/icon.png' ) ){
       echo '<img src="'.$site->getBaseroot().'admin/'.$moduled->getFolder().'/icon.png" style="float:left;height:2.5em">';
     }
-    echo Module_name.'<br>
+    echo '</div>
+    <div class="field">'.Module_name.'<br>
     <input type="text" name="name" value="'.$moduled->getName().'">
     </div>
     <div class="field">
@@ -141,14 +138,9 @@ and isset($_POST['movedown'])){
     </div>';
   }
   ?>
-  
   <form name="uploadmodule" method="post" enctype="multipart/form-data" action="">
-    
     <p class="pinput"><b><?php echo New_module.'</b><br>'.Upload_zip_module_files; ?><br>
     <input type="file" name="zip"></p>
-    
     <p><input type="submit" name="uploadmodule" value="<?php echo Upload_module_file; ?>"></p>
-    
   </form>
-  
 </fieldset>
