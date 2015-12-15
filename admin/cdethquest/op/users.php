@@ -20,19 +20,15 @@ and isset ($_POST['user'])){
   }
 }
 ?>
-
   <p><?php echo HelpUsers; ?></p>
-  
   <form name="usersearch" onsubmit="event.preventDefault(); backend.post(this);">
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <p class="pinput"><?php echo Search_by_name; ?><br>
     <input type="text" name="filter" value="<?php echo $filter; ?>">
     <input type="submit" value="<?php echo Search; ?>"></p>
   </form>
-
   <div class="editiontitle"><?php echo Users; ?></div>
   <?php
-  
   $query = 'select int_user.id from int_user, int_permissions, int_admin 
   where int_admin.url="'.$_GET['module'].'" 
   and int_admin.id=int_permissions.module 
@@ -47,7 +43,7 @@ and isset ($_POST['user'])){
       $guser = new Dethuser($datalink, $row[0]);
       echo '<div class="editionitem">
       <div class="field"><b>'.$auser->getName().'</b></div>
-      <div class="controls">
+      <div class="field">
       <form name="user'.$auser->getId().'" onsubmit="event.preventDefault(); backend.post(this);">
       <input type="hidden" name="pag" value="'.$pag.'">
       <input type="hidden" name="filter" value="'.$filter.'">

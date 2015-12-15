@@ -3,18 +3,18 @@ $buffer = ob_get_contents();
 $buffer = str_replace(
   '<link rel="shortcut icon" type="image/png" href="'.$site->getBaseroot().'styles/'.$site->getStyle().'/icon.png">', 
   '<link rel="shortcut icon" type="image/png" href="'.$site->getBaseroot().'admin/'.$module->getFolder().'/icon.png">', 
-  $buffer);
+  $buffer );
 $buffer = str_replace(
   '<title>'.$site->getTitle().'</title>', 
   '<title>'.$module->getName().'</title>', 
-  $buffer);
+  $buffer );
 ob_end_clean();
 ob_start();
 echo $buffer;
-define ('mod', 'c');
+define( 'mod', 'c' );
 include('class/dethuser.class.php');
 $basiclink = $site->getBaselink().'?adm='.$site->getAdmin();
-$dethuser = new Dethuser ($site->getDatalink(), $_SESSION['uid']);
+$dethuser = new Dethuser( $site->getDatalink(), $_SESSION['uid'] );
 $amenu = Array(  //Administration menu
   'administration' => 'Administration',
   'characters' => 'Characters',
@@ -81,7 +81,7 @@ $smmenu = Array(  //Sub-menus
   var fprint = "<?php echo $dethuser->getFprint(); ?>";
   var username = "<?php echo $_SESSION['username']; ?>";
   backend = new Backend( script, root, module, lang, fprint, username);
-  setTimeout(function(){ $("#wrapper").animate({ height:$("#main").height(), opacity:1 }, backend.speed); }, backend.speed);
+  setTimeout( function(){ $("#wrapper").animate({ height:$("#main").height(), opacity:1 }, backend.speed); }, backend.speed );
 </script>
 <div id="<?php echo mod.'dethquest'; ?>">  
   <h1 class="dethtitle"><?php echo $module->getName(); ?></h1>  
@@ -89,7 +89,7 @@ $smmenu = Array(  //Sub-menus
   <div id="administration">
   <ul class="admenu">
   <?php
-  foreach( $amenu as $link => $title ) {
+  foreach( $amenu as $link => $title ){
     if( $dethuser->hasPermission( $link ) ){
       echo '<li onmouseenter="backend.playHoverSound()" class="adli"><a class="menulink">'.constant ($title).'</a>';
       if( count( $ammenu[$link] ) > 0){
@@ -135,9 +135,9 @@ $smmenu = Array(  //Sub-menus
     <div id="wrapper">
     <div id="main">
       <?php
-      if (!$_SESSION['logged']){
+      if( !$_SESSION['logged'] ){
         echo '<div class="dethlogin">';
-        include('admin/users/frontend.php');
+        include( 'admin/users/frontend.php' );
         echo '</div>';
       }else{
         echo '<script type="text/javascript">backend.link("preloader", "preloader")</script>';
@@ -146,17 +146,13 @@ $smmenu = Array(  //Sub-menus
       </div>
     </div>
   </div>  
-<div class="version">DethQuest v15.11.25</div>
+<div class="version">DethQuest v15.12.15</div>
 </div>
 <?php
 if( $site->getDevice() != 'desktop' ){
 ?>
   <script type="text/javascript">
-  $( "#administration" ).each( function() {
-    $( this ).click( function() {
-       $( this ).toggleClass( "hovered" );
-    } );
-  });
+  setHoverables( "#administration" );
   $( ".adli" ).each( function() {
     $( this ).click( function() {
        $( this ).toggleClass( "hovered" );
