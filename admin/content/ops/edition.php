@@ -49,7 +49,7 @@ if (!isset($_GET['content'])){
       }
       echo '<b>'.$content->getTitle().'</b></div>
       <div class="field">'.$content->getUrl().'</div>
-      <div class="controls">
+      <div class="field">
       <form name="movecontent'.$content->getId().'" method="post" action="">
       <input type="hidden" name="mcontent" value="'.$content->getId().'">
       <a href="'.$basiclink.'&op=edition&filter='.$filter.'&pag='.$pag.'&content='.$content->getUrl().'">

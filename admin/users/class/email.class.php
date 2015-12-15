@@ -14,7 +14,7 @@ class Email{  //Manages email sendings
   }
 
   public function preview(){
-    echo '<div style="background:#FFFFFF;color:#000000;padding:0.5em">
+    echo '<div style="background:#FFFFFF;border:0.1em solid #000000;color:#000000;padding:0.5em;text-align:left;margin:0.5em;font-size:0.9em;font-family:Arial,sans-serif">
     <pre>
       From:    <b>'.$this->orig.'</b>
       To:      <b>'.$this->dest.'</b>

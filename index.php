@@ -74,17 +74,18 @@ $user->jsessionCheck( $site );
             case 'frontend':
               $path = $site->getPath();
               $module = new Module($site->getDatalink(), $path[0]);
-              if ($module->getId() != 0){
-                if (($site->getMaintenance()
+              if( $module->getId() != 0 
+              and $module->getActive() ){
+                if( ( $site->getMaintenance()
                 and $module->getUrl() != 'login'
-                and !$_SESSION['logged'])
-                or ($site->getMaintenance()
-                and $_SESSION['logged']) 
-                and !$user->isAdmin()){  //We allow the login module to display
+                and !$_SESSION['logged'] )
+                or ( $site->getMaintenance()
+                and $_SESSION['logged'] ) 
+                and !$user->isAdmin() ){  //We allow the login module to display
                   $site->showMaintenance();
                 }else{
-                  include($module->getLangfile());
-                  include('admin/'.$module->getFrontend());
+                  include( $module->getLangfile() );
+                  include( 'admin/'.$module->getFrontend() );
                 }
               }
               break;
