@@ -16,9 +16,9 @@ class Email{  //Manages email sendings
   public function preview(){
     echo '<div style="background:#FFFFFF;color:#000000;padding:0.5em">
     <pre>
-      From:    '.$this->orig.'
-      To:      '.$this->dest.'
-      Subject: '.$this->subj.'
+      From:    <b>'.$this->orig.'</b>
+      To:      <b>'.$this->dest.'</b>
+      Subject: <b>'.$this->subj.'</b>
     </pre>
     '.$this->body.'
     </div>';
