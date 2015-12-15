@@ -2,8 +2,8 @@
 //Frontend
 define('Private_access', "Accés privat");
 define('Username_or_email', "Usuari / Email");
-define('Password', "Contrassenya");
-define('Log_in', "Accedir");
+define('Password', "Contrasenya");
+define('Log_in', "Accedir-hi");
 define('Log_out', "Sortir");
 define('Login_incorrect', "Dades incorrectes");
 define('Register', "Regístra't");
