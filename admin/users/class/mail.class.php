@@ -13,17 +13,6 @@ class Email{  //Manages email sendings
     $this->body = $body;
   }
 
-  public function preview(){
-    echo '<div style="background:#FFFFFF;color:#000000;padding:0.5em">
-    <pre>
-      From:    '.$this->orig.'
-      To:      '.$this->dest.'
-      Subject: '.$this->subj.'
-    </pre>
-    '.$this->body.'
-    </div>';
-  }
-
   public function send(){
     $header = 'MIME-Version: 1.0'."\n";
     $header .= 'Content-type: text/html; charset=UTF-8'."\n";
