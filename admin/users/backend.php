@@ -31,4 +31,4 @@ if( isset($_GET['op'] ) ){
   }
   ?>
 </div>
-<div class="version">Users v15.12.15</div>
+<div class="version">Users v15.12.16</div>

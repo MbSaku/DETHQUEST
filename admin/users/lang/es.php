@@ -18,7 +18,7 @@ define('Recover_account', "Recuperar / activar cuenta");
 define('Thanks_for_signing_up_to', "Gracias por registrarte en");
 define('Your_login_details_are', "Tus detalles de acceso:");
 define('Activate_your_account', "Activa tu cuenta ahora");
-define('Account_recovery_for', "Solicitud de recuperación de cuentas de");
+define('Account_recovery_subject', "Solicitud de recuperación de cuentas");
 define('Recovery_instructions', "Haz clic aquí para recuperar el acceso a tu cuenta");
 define('Recovery_email_sent', "Se te ha enviado un email con los detalles para la recuperación de tu cuenta. Si no lo recibes en unos minutos comprueba tu filtro antispam.");
 define('Recovery_email_not_sent', "Se ha producido un error en el servidor de correo. Inténtalo de nuevo más tarde.");

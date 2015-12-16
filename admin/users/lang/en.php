@@ -18,7 +18,7 @@ define('Recover_account', "Recover / activate account");
 define('Thanks_for_signing_up_to', "Thank you for signin up to");
 define('Your_login_details_are', "Your login details are:");
 define('Activate_your_account', "Activate your account");
-define('Account_recovery_for', "Account recovery request for");
+define('Account_recovery_subject', "Account recovery request");
 define('Recovery_instructions', "Click here to gain access to your account");
 define('Recovery_email_sent', "You have been sent an e-mail to help you gain access to your account.<br>If you do not receive it in a few minutes check your spam filter.");
 define('Recovery_email_not_sent', "The email server encountered an error. Please, try again later.");
