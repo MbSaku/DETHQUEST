@@ -1,0 +1,82 @@
+<?php
+//Frontend
+define('Private_access', "Private access");
+define('Username_or_email', "Username / Email");
+define('Password', "Password");
+define('Log_in', "Log in");
+define('Log_out', "Log out");
+define('Login_incorrect', "Wrong login");
+define('Register', "Sign up");
+define('Account_recovery', "Account recovery / activation");
+define('Accept_terms_and_conditions', "You have read and accept our terms and conditions");
+define('Register_help', "Fill the following fields and sign up to our website.");
+define('Registry_email_sent', "You have been sent an e-mail with the details for activation of your account");
+define('Registry_email_not_sent', "The email server encountered an error. You will not receive confirmation, please refer to account recovery to activate your account.");
+define('You_must_accept_terms', "You must accept the terms and conditions first");
+define('Recovery_help', "Please, send us your user account e-mail and you will receive a message with the details on how to recover / activate your account.");
+define('Recover_account', "Recover / activate account");
+define('Thanks_for_signing_up_to', "Thank you for signin up to");
+define('Your_login_details_are', "Your login details are:");
+define('Activate_your_account', "Activate your account");
+define('Account_recovery_subject', "Account recovery request");
+define('Recovery_instructions', "Click here to gain access to your account");
+define('Recovery_email_sent', "You have been sent an e-mail to help you gain access to your account.<br>If you do not receive it in a few minutes check your spam filter.");
+define('Recovery_email_not_sent', "The email server encountered an error. Please, try again later.");
+define('Password_reset', "Your password has been reset.");
+define('Password_email_sent', "You have been sent an e-mail with your new password.");
+define('This_email_not_exists', "This e-mail was not found in our system. You must use your registered email.");
+//Private panel
+define('User_details', "User details");
+define('User_email', "E-mail");
+define('Change_email', "Change e-mail");
+define('Save_email', "Save changes");
+define('New_password', "New password");
+define('Change_password', "Change password");
+define('Save_password', "Save changes");
+define('Password_change_help', "You can change your password here:");
+define('User_data_saved', "User settings saved successfully");
+define('User_data_not_saved', "No changes were made");
+define('Password_updated', "Password updated");
+define('Password_not_updated', "The password you entered did not update successfully");
+define('Account_activity', "Account activity");
+//Backend
+define('Users', "Users");
+define('Charges', "Charges");
+//Users
+define('Users_help', "Here you can create, edit and delete the users of the website.");
+define('Active_users', "Active users:");
+define('All_users', "All users");
+define('Last_active_on', "Last activity on");
+define('Add_new_user', "Register a new user");
+define('Username_email_filter', "Search users:");
+define('Filter_users', "Filter");
+define('Editing_user', "Editing user");
+define('User_name', "Username:");
+define('Email', "Email:");
+define('User_active', "Account activated");
+define('Charge', "Charge:");
+define('Back_to_users', "Go back");
+define('Operation_not_permitted', "Operation not permitted");
+define('Save_user', "Save user");
+define('Delete_user', "Delete user");
+define('Set_password', "Password:");
+define('Reset_password', "Password reset (optional):");
+define('User_registered', "User registered");
+define('Error_activating_account', "Error activating account");
+define('You_will_delete_this_user_are_you_sure', "You are about to delete this user. This can't be undone. ¿Are you sure?");
+define('Yes_delete_user', "Yes");
+define('No_delete_user', "No, leave it as it is");
+define('User_deleted', "User deleted");
+define('User_not_deleted', "An error ocurred deleting the user");
+//Charges
+define('Charge_help', "Here you can define, edit and delete the charges available. New registered users will take the highest level automatically.");
+define('Available_charges', "Charges:");
+define('Save_charge', "Save");
+define('Delete_charge', "Delete");
+define('Charge_name', "Name:");
+define('Charge_level', "Level:");
+define('Add_new_charge', "Add new");
+define('Charge_saved', "Charge saved succesfully");
+define('Charge_deleted', "Charge deleted");
+define('Charge_not_saved', "An error ocurred saving the charge");
+?>
