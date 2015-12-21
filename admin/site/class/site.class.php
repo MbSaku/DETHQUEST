@@ -908,15 +908,16 @@ class Site {
         }
       break;
       case 'frontend':
-        if( isset($this->path[0])){
+        if( isset( $this->path[0] ) 
+        and $this->path[0] != 'login' ){
           $query = 'select int_admin_trad.name
           from int_admin_trad, int_admin
           where int_admin.url="'.$this->path[0].'"
           and int_admin.id=int_admin_trad.id
           and int_admin_trad.lang="'.$_SESSION['lang'].'"';
           $result = $this->datalink->dbQuery($query, 'result');
-          if( isset($result[0])
-          and $row = $result[0]){
+          if( isset( $result[0] )
+          and $row = $result[0] ){
             $this->title = $row[0].' - '.$this->title;
           }
         }

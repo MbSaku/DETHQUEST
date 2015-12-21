@@ -29,14 +29,8 @@ if( $dethuser->getCharacter() == 0 ){
       <div class="charoverview">
         <p><?php 
           echo '<span class="desc"><b>'.$character->getName().'</b></span><br>
-          '.Level.' <span class="out">'.$character->getLevel().'</span><br>
-          '.Experience.': <b>'.$character->getExperience().' / '.$character->expNextLevel().'</b>'; 
+          '.Level.' <span class="out">'.$character->getLevel().'</span><br>'; 
         ?></p>
-        <div class="xpbar">
-          <div class="bar">
-            <div class="bar-grey" style="width:<?php echo ( ( $character->getExperience() / $character->expNextLevel() ) * 100 ) ?>%"></div>
-          </div>
-        </div>
       </div>
       <?php
       $result = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_scenario order by started asc', 'result' );

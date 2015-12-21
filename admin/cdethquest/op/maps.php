@@ -16,19 +16,19 @@ $regspag = 20;
   <p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>  
 <?php
 if (!isset($_POST['map'])){
-?>  
+?>
+  <form name="usersearch" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
+    <input type="hidden" name="pag" value="<?php echo $pag; ?>">
+    <p class="pinput"><?php echo Search_by_name; ?><br>
+    <input type="text" name="filter" value="<?php echo $filter; ?>">
+    <input type="submit" value="<?php echo Search; ?>"></p>
+  </form>
   <form name="addnew" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
     <input type="hidden" name="filter" value="<?php echo $filter; ?>">
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="map" value="0">
-    <p><input type="submit" value="<?php echo Add; ?>"></p>
+    <p class="pinput"><input type="submit" value="<?php echo Add; ?>"></p>
   </form>
-  <form name="usersearch" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
-    <input type="hidden" name="pag" value="<?php echo $pag; ?>">
-    <p><?php echo Search_by_name; ?><br>
-    <input type="text" name="filter" value="<?php echo $filter; ?>">
-    <input type="submit" value="<?php echo Search; ?>"></p>
-  </form>  
   <div class="editiontitle"><?php echo Maps; ?></div>  
   <?php
   $query = 'select '.mod.'deth_maps.id 

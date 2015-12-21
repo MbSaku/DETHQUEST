@@ -6,6 +6,17 @@ if(isset($path[2])){
     $vuser = new User($site->getDatalink(), $result[0][0]);
     echo $vuser->validate();
   }
+  ?>
+  <fieldset><legend><?php echo Private_access; ?></legend>
+  <form name="login" method="post" action="<?php echo $site->getBaselink().'/login'; ?>">
+    <p class="pinput"><?php echo Username_or_email; ?>:<br>
+    <input type="text" name="username" value=""></p>
+    <p class="pinput"><?php echo Password; ?>:<br>
+    <input type="password" name="password" value=""></p>
+    <p><input type="submit" name="login" value="<?php echo Log_in; ?>"></p>
+  </form>
+  </fieldset>
+  <?php
 }else{
   $uname = '';
   $umail = '';

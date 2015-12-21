@@ -25,7 +25,7 @@ Abstract class DatabaseObject {   //Manages database operations (construct, save
         }
       }
       $query .= ' from '.$this->table.' where id="'.$id.'" limit 1';
-      $result = $this->datalink->dbquery( $query, 'result' );
+      $result = $this->datalink->dbQuery( $query, 'result' );
       if( isset( $result[0] ) ){
         $i = 0;
         foreach( $this->vars as $k => $v ){

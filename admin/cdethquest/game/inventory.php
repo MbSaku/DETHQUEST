@@ -13,6 +13,18 @@ if( $dethuser->getCharacter() == 0 ){
   );
   ?>
   <h1><?php echo Inventory; ?></h1>
+  <div class="charselect">
+    <div class="charportrait">
+      <div class="inner"><?php echo $character->renderHtml( $module->getFolder(), true ); ?></div>
+    </div>
+    <div class="charoverview">
+      <p><?php 
+        echo '<span class="desc"><b>'.$character->getName().'</b></span><br>
+        '.Level.' <span class="out">'.$character->getLevel().'</span>'; 
+      ?></p>
+      <?php echo $character->renderBars(); ?>
+    </div>
+  </div>
   <div class="inventory">
   <?php
   foreach( $types as $type ){

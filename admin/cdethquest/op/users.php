@@ -42,31 +42,32 @@ and isset ($_POST['user'])){
       $auser = new User($datalink, $row[0]);
       $guser = new Dethuser($datalink, $row[0]);
       echo '<div class="editionitem">
-      <div class="field"><b>'.$auser->getName().'</b></div>
-      <div class="field">
-      <form name="user'.$auser->getId().'" onsubmit="event.preventDefault(); backend.post(this);">
-      <input type="hidden" name="pag" value="'.$pag.'">
-      <input type="hidden" name="filter" value="'.$filter.'">
-      <input type="hidden" name="user" value="'.$auser->getId().'">
-      <select name="charge"><option value="0"'; 
-      if ($guser->getCharge() == 0){ 
-        echo ' selected'; 
-      }
-      echo '>- '.None.' -</option>';
-      $query = 'select id, name 
-      from '.mod.'deth_charges
-      order by level desc';
-      $result2 = $datalink->dbQuery($query, 'result');
-      foreach ($result2 as $row2){
-        echo '<option value="'.$row2[0].'"'; 
-        if ($guser->getCharge() == $row2[0]){ 
+        <form name="user'.$auser->getId().'" onsubmit="event.preventDefault(); backend.post(this);">
+        <div class="field"><b>'.$auser->getName().'</b></div>
+        <div class="field">
+        <input type="hidden" name="pag" value="'.$pag.'">
+        <input type="hidden" name="filter" value="'.$filter.'">
+        <input type="hidden" name="user" value="'.$auser->getId().'">
+        <select name="charge"><option value="0"'; 
+        if ($guser->getCharge() == 0){ 
           echo ' selected'; 
         }
-        echo '>'.$row2[1].'</option>';
-      }
-      echo '</select> <input type="submit" name="apply" value="'.Apply.'">
-      </form>
-      </div>
+        echo '>- '.None.' -</option>';
+        $query = 'select id, name 
+        from '.mod.'deth_charges
+        order by level desc';
+        $result2 = $datalink->dbQuery($query, 'result');
+        foreach ($result2 as $row2){
+          echo '<option value="'.$row2[0].'"'; 
+          if ($guser->getCharge() == $row2[0]){ 
+            echo ' selected'; 
+          }
+          echo '>'.$row2[1].'</option>';
+        }
+        echo '</select> 
+        </div>
+        <div class="field"><input type="submit" name="apply" value="'.Apply.'"></div>
+        </form>
       </div>';
     }
     $i++;

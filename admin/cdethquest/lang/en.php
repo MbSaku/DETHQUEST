@@ -193,11 +193,11 @@ define('Item_image', "Upload an image for this item");
 //Healing items
 define('HelpHealing', "Here you can manage and edit all the healing items available to players.");
 define('Healing_items', "Healing items");
-define('Health_amount', "Health");
+define('Health_amount', "Health recovery");
 //Repairing items
 define('HelpRepairing', "Here you can manage and edit all the armor repairing items available to players.");
 define('Repairing_items', "Armor repairing items");
-define('Armor_amount', "Armor amount");
+define('Armor_amount', "Armor recovery");
 //Equipment items
 define('HelpEquipment', "Here you can manage and edit all the equipment that can be used by the characters that modifies their basic statistics.");
 define('Equipment_items', "Available equipment");
@@ -307,8 +307,9 @@ define('Welcome', "Welcome");
 define('HelpCity', "Choose here the building you want to go and browse our services.");
 define('melee', "Melee weapons");
 define('ranged', "Ranged weapons");
-define('clinic', "Clinic");
 define('workshop', "Clothes and armor");
+define('items', "Goods and services");
+define('mercs', "Mercenaries");
 define('faction', "Corporate link");
 define('Back_city', "Exit");
 define('Buy', "Buy");

@@ -16,17 +16,17 @@ $regspag = 20;
 <?php
 if (!isset($_POST['item'])){
 ?>
+  <form name="usersearch" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
+    <input type="hidden" name="pag" value="<?php echo $pag; ?>">
+    <p class="pinput"><?php echo Search_by_name; ?><br>
+    <input type="text" name="filter" value="<?php echo $filter; ?>">
+    <input type="submit" value="<?php echo Search; ?>"></p>
+  </form>
   <form name="addnew" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
     <input type="hidden" name="filter" value="<?php echo $filter; ?>">
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="item" value="0">
-    <p><input type="submit" value="<?php echo Add_item; ?>"></p>
-  </form>
-  <form name="usersearch" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
-    <input type="hidden" name="pag" value="<?php echo $pag; ?>">
-    <p><?php echo Search_by_name; ?><br>
-    <input type="text" name="filter" value="<?php echo $filter; ?>">
-    <input type="submit" value="<?php echo Search; ?>"></p>
+    <p class="pinput"><input type="submit" value="<?php echo Add_item; ?>"></p>
   </form>
   <div class="editiontitle"><?php echo Repairing_items; ?></div>
   <?php
@@ -131,7 +131,7 @@ if (!isset($_POST['item'])){
       <input type="number" name="premium" value="<?php echo $item->getPremium(); ?>" style="width:6em"></p>
     </div>
     <div class="edblock">
-      <p><?php echo Item_description; ?><br>
+      <p><?php echo Item_description; ?>:<br>
       <textarea name="description"><?php echo $item->getDescription(); ?></textarea></p>
     </div>
     <p><input type="submit" value="<?php echo Save_item; ?>">

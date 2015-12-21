@@ -30,7 +30,7 @@ if (isset($path[1])){
     <p><input type="submit" name="login" value="<?php echo Log_in; ?>"></p>
     <p>
     <?php
-    if ($site->getFreereg()){
+    if( $site->getFreereg() ){
       echo '<a href="'.$site->getBaselink().'/login/signup"><input type="button" value="'.Register.'"></a>';
     }
     ?>
