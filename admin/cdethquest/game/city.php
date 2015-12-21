@@ -20,6 +20,9 @@ if( $dethuser->getCharacter() == 0 ){
         case 'armor':
           $item = new Armor( $site->getDatalink(), $_POST['item'] );
         break;
+        case 'equipment':
+          $item = new Equipment( $site->getDatalink(), $_POST['item'] );
+        break;
         case 'healing':
           $item = new HealingItem( $site->getDatalink(), $_POST['item'] );
         break;
@@ -43,7 +46,7 @@ if( $dethuser->getCharacter() == 0 ){
       '.Premium_wealth.': <span class="out">'.number_format( $character->getPremium(), 0, ',', '.' ).'</span></p>
     </div>
     <p>'.Welcome.' <b>'.$character->getName().'</b>.</p>';
-    $buildings = Array( 'melee', 'ranged', 'workshop', 'items' );
+    $buildings = Array( 'melee', 'ranged', 'workshop', 'equipment', 'items' );
     $centers = Array( 'mercs', 'faction' );
     if( !in_array( $building, $buildings ) 
     and !in_array( $building, $centers ) ){
@@ -72,6 +75,9 @@ if( $dethuser->getCharacter() == 0 ){
           case 'workshop':
             $inventory = $character->getInventory( 'armor' );
           break;
+          case 'equipment':
+            $inventory = $character->getInventory( 'equipment' );
+          break;
           case 'items':
             $inventory = array_merge( $character->getInventory( 'healing' ), $character->getInventory( 'repairing' ) );
           break;
@@ -86,6 +92,9 @@ if( $dethuser->getCharacter() == 0 ){
             break;
             case 'armor':
               $item = new Armor( $site->getDatalink(), $irow->getItem() );
+            break;
+            case 'equipment':
+              $item = new Equipment( $site->getDatalink(), $irow->getItem() );
             break;
             case 'healing':
               $item = new HealingItem( $site->getDatalink(), $irow->getItem() );
@@ -133,9 +142,12 @@ if( $dethuser->getCharacter() == 0 ){
           case 'workshop':
             $result = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_item_armor where forsale=1 order by price asc', 'result' );
           break;
+          case 'equipment':
+            $result = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_item_equipment where forsale=1 order by price asc', 'result' );
+          break;
           case 'items':
-            $result = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_item_healing order by price asc', 'result' );
-            $result2 = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_item_repairing order by price asc', 'result' );
+            $result = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_item_healing where forsale=1 order by price asc', 'result' );
+            $result2 = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_item_repairing where forsale=1 order by price asc', 'result' );
           break;
         }
         $i = 0;
@@ -151,6 +163,10 @@ if( $dethuser->getCharacter() == 0 ){
             case 'workshop':
               $item = new Armor( $site->getDatalink(), $row[0] );
               $type = 'armor';
+            break;
+            case 'equipment':
+              $item = new Equipment( $site->getDatalink(), $row[0] );
+              $type = 'equipment';
             break;
             case 'items':
             default:
@@ -174,47 +190,51 @@ if( $dethuser->getCharacter() == 0 ){
             echo '<img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'">';
           }
           echo '</div>
-          <div class="item-name">'.$item->getName().'</div>
-          <div class="item-price"><b>'.$item->getPrice().Coins.'</b>';
-          if( $item->getPremium() > 0 ){
-            echo '<br><b>'.$item->getPremium().'</b> '.Premium_coins;
-          }
-          echo '</div>
-          <div class="item-text">
-          <form name="buyitem'.$item->getId().'" method="post" action="" onsubmit="event.preventDefault();backend.post(this,false)">
-          <input type="hidden" name="type" value="'.$type.'">
-          <input type="hidden" name="item" value="'.$item->getId().'">';
-          switch( $building ){
-            case 'ranged':
-            case 'melee':
-              if( $item->getClipsize() > 0 ){
-                echo Item_clipsize.': <b>'.$item->getClipsize().'</b><br>
-                '.Rate_of_fire.': <b>'.$item->getAttacks().'</b>';
+          <div class="item-title">
+            <div class="item-name">'.$item->getName().'</div>
+            <div class="item-price"><b>'.$item->getPrice().Coins.'</b>';
+            if( $item->getPremium() > 0 ){
+              echo '<br><b>'.$item->getPremium().'</b> '.Premium_coins;
+            }
+            echo '</div>
+          </div>
+          <div class="item-info">
+            <div class="item-text">
+            <p>'.nl2br( $item->getDescription() ).'</p>
+            <form name="buyitem'.$item->getId().'" method="post" action="" onsubmit="event.preventDefault();backend.post(this,false)">
+            <input type="hidden" name="type" value="'.$type.'">
+            <input type="hidden" name="item" value="'.$item->getId().'">';
+            switch( $building ){
+              case 'ranged':
+              case 'melee':
+                if( $item->getClipsize() > 0 ){
+                  echo '<p>'.Item_clipsize.': <b>'.$item->getClipsize().'</b><br>
+                  '.Rate_of_fire.': <b>'.$item->getAttacks().'</b></p>';
+                }
+                echo '<p><input type="submit" value="'.Buy_weapon.'"></p>';
+              break;
+              case 'workshop':
+                echo '<p>'.Hitpoints.': <b>'.$item->getHitpoints().'</b><br>
+                '.Protection.': <b>'.$item->getProtection().'</b></p>';
+                echo '<p><input type="submit" value="'.Buy_armor.'"></p>';
+              break;
+              case 'items':
+                switch( $type ){
+                  case 'healing':
+                    echo '<p>'.Health_amount.': <b>'.$item->getHealth().'</b><br>
+                    <p><input type="submit" value="'.Buy.'"></p>';
+                  break;
+                  case 'repairing':
+                    echo '<p>'.Armor_amount.': <b>'.$item->getArmor().'</b><br>
+                    <p><input type="submit" value="'.Buy.'"></p>';
+                  break;
+                }
+              break;
+              default:
+                echo '<p><input type="submit" value="'.Buy.'"></p>';
               }
-              echo '<p><input type="submit" value="'.Buy_weapon.'"></p>';
-            break;
-            case 'workshop':
-              echo Hitpoints.': <b>'.$item->getHitpoints().'</b><br>
-              '.Protection.': <b>'.$item->getProtection().'</b>';
-              echo '<p><input type="submit" value="'.Buy_armor.'"></p>';
-            break;
-            case 'items':
-              switch( $type ){
-                case 'healing':
-                  echo Health_amount.': <b>'.$item->getHealth().'</b><br>
-                  <p><input type="submit" value="'.Buy.'"></p>';
-                break;
-                case 'repairing':
-                  echo Armor_amount.': <b>'.$item->getArmor().'</b><br>
-                  <p><input type="submit" value="'.Buy.'"></p>';
-                break;
-              }
-            break;
-            default:
-              echo '<p><input type="submit" value="'.Buy.'"></p>';
-          }
-          echo '</form>
-          '.$item->getDescription().'
+              echo '</form>
+            </div>
           </div>
           </div>';
         }

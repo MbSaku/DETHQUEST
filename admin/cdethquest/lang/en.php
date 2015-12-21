@@ -308,6 +308,7 @@ define('HelpCity', "Choose here the building you want to go and browse our servi
 define('melee', "Melee weapons");
 define('ranged', "Ranged weapons");
 define('workshop', "Clothes and armor");
+define('equipment', "Cyberware");
 define('items', "Goods and services");
 define('mercs', "Mercenaries");
 define('faction', "Corporate link");

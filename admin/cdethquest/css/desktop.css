@@ -2216,8 +2216,8 @@ textarea:hover {
   font-weight:bold;
   display:inline-block;
   vertical-align:middle;
-  width:15em;
   text-align:center;
+  width:15em;
   margin:0.5em 1.5em;
   padding:1em 0;
   border:0.2em solid #ffa100;
@@ -2226,10 +2226,6 @@ textarea:hover {
 
 #cdethquest .building:hover {
   border:0.2em solid #FFFFFF;
-}
-
-#cdethquest .city-interior {
-  text-align:center;
 }
 
 #cdethquest .city-inventory {
@@ -2242,12 +2238,17 @@ textarea:hover {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  text-align:center;
   vertical-align:top;
+  text-align:center;
+}
+
+#cdethquest .city-inventory .shop-item {
+  text-align:center;
 }
 
 #cdethquest .city-forsale {
   display:inline-block;
+  text-align:center;
   width:70%;
   margin:0;
   padding:0.5em;
@@ -2255,7 +2256,6 @@ textarea:hover {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  text-align:center;
   vertical-align:top;
   background:#000000;
   -webkit-border-radius: 0.25em 0.25em 0.25em 0.25em;
@@ -2266,16 +2266,34 @@ textarea:hover {
 
 #cdethquest .shop-item,
 #cdethquest .inventory-item {
-  width:12em;
   padding:0.5em;
   margin:0.5em;
-  display:inline-block;
-  text-align:center;
-  vertical-align:top;
   cursor:pointer;
+  text-align:left;
+}
+
+#cdethquest .inventory-item {
+	display: inline-block;
+	vertical-align:top;
+	text-align:center;
+	max-width:13em;
+}
+
+#cdethquest .inventory-item .item-text p {
+  margin:1em 0;
+}
+
+#cdethquest .item-picture,
+#cdethquest .item-title,
+#cdethquest .item-info {
+	display:inline-block;
+	vertical-align:top;
+	min-width:11em;
+	max-width:50%;
 }
 
 #cdethquest .item-picture {
+	text-align:center;
   height:4em;
   padding:0.5em;
   margin:0.5em;
@@ -2290,6 +2308,10 @@ textarea:hover {
 #cdethquest .item-picture img {
   max-height:4em;
   max-width:10em;
+}
+
+#cdethquest .item-title {
+  padding-top:1em;
 }
 
 #cdethquest .item-name {
@@ -2307,7 +2329,7 @@ textarea:hover {
 }
 
 #cdethquest .item-text {
-  margin:0.5em;
+	padding-top:0.5em;
   max-height:0;
   overflow:hidden;
   -webkit-transition: all 0.25s ease-in-out;
@@ -2318,8 +2340,12 @@ textarea:hover {
   opacity:0;
 }
 
+#cdethquest .item-text p {
+  margin:0.25em 1.5em;
+}
+
 #cdethquest .shop-item:hover .item-text,
 #cdethquest .inventory-item:hover .item-text {
-  max-height:15em;
+  max-height:20em;
   opacity:1;
 }

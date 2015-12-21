@@ -96,6 +96,11 @@ if (!isset($_POST['item'])){
     if (isset($_FILES['image'])){
       $item->setIcon($site->imageUpload($_FILES['image'], $module->getFolder()));
     }
+    if( isset( $_POST['forsale'] ) ){
+      $item->setForsale( true );
+    }else{
+      $item->setForsale( false );
+    }
     if (isset($_POST['delete'])){
       echo $item->delete();
     }else{
@@ -129,6 +134,7 @@ if (!isset($_POST['item'])){
       <input type="number" name="price" value="<?php echo $item->getPrice(); ?>" style="width:6em"></p>
       <p class="pinput"><?php echo Premium_price; ?>:<br>
       <input type="number" name="premium" value="<?php echo $item->getPremium(); ?>" style="width:6em"></p>
+      <p class="pinput"><input type="checkbox" name="forsale" value="1"<?php if( $item->getForsale() ){ echo ' checked'; } ?>> <?php echo For_sale; ?></p>
     </div>
     <div class="edblock">
       <p><?php echo Item_description; ?>:<br>

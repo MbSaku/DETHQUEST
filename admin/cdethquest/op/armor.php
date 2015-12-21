@@ -46,7 +46,7 @@ if (!isset($_POST['item'])){
         <input type="hidden" name="item" value="'.$item->getId().'">
         <div class="field"><input type="submit" value="'.$item->getName().'"></div>
         <div class="field">';
-        if ($item->getIcon() != ''){
+        if( $item->getIcon() != '' ){
           echo '<img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'"><br>';
         }
         echo '</div>

@@ -105,6 +105,11 @@ if (!isset($_POST['item'])){
     if (isset($_FILES['femaleimage'])){
       $item->setFemaleimage($site->imageUpload($_FILES['femaleimage'], $module->getFolder()));
     }
+    if( isset( $_POST['forsale'] ) ){
+      $item->setForsale( true );
+    }else{
+      $item->setForsale( false );
+    }
     if (isset($_POST['delete'])){
       echo $item->delete();
     }else{
@@ -155,6 +160,7 @@ if (!isset($_POST['item'])){
         echo ' checked';
       }
       ?>> <?php echo Permanent; ?></p>
+      <p class="pinput"><input type="checkbox" name="forsale" value="1"<?php if( $item->getForsale() ){ echo ' checked'; } ?>> <?php echo For_sale; ?></p>
     </div>
     <div class="edblock">
       <p><?php echo Item_description; ?><br>

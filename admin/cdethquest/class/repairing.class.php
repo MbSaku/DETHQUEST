@@ -6,6 +6,7 @@ class RepairingItem extends DatabaseObject implements PurchasableItem {
   protected $description = '';
   protected $price = 0;
   protected $premium = 0;
+  protected $forsale = false;
   protected $armor = 0;
   protected $image = '';
   
@@ -19,55 +20,64 @@ class RepairingItem extends DatabaseObject implements PurchasableItem {
   }
 
 /*
- * GETTERS
+ * GETTERS AND SETTERS
  */
   
   public function getId(){
     return $this->id;
   }
+  
   public function getName(){
     return $this->name;
   }
+  public function setName( $string ){
+    $this->name = $string;
+  }
+  
   public function getDescription(){
     return $this->description;
   }
+  public function setDescription( $text ){
+    $this->description = $text;
+  }
+  
   public function getPrice(){
     return $this->price;
   }
+  public function setPrice( $integer ){
+    $this->price = $integer;
+  }
+  
   public function getSellingprice(){
     return floor ($this->price * 0.25);
   }
+    
   public function getPremium(){
     return $this->premium;
   }
+  public function setPremium( $integer ){
+    $this->premium = $integer;
+  }
+  
+  public function getForsale(){
+    return $this->forsale;
+  }
+  public function setForsale( $boolean ){
+    $this->forsale = $boolean;
+  }
+  
   public function getArmor(){
     return $this->armor;
   }
+  public function setArmor( $integer ){
+    $this->armor = $integer;
+  }
+  
   public function getIcon(){
     return $this->image;
   }
-
-/*
- * SETTERS
- */
-  
-  public function setName($name){
-    $this->name = $name;
-  }
-  public function setDescription($description){
-    $this->description = $description;
-  }
-  public function setPrice($price){
-    $this->price = $price;
-  }
-  public function setPremium($premium){
-    $this->premium = $premium;
-  }
-  public function setArmor($armor){
-    $this->armor = $armor;
-  }
-  public function setIcon($image){
-    $this->image = $image;
+  public function setIcon( $string ){
+    $this->image = $string;
   }
 
 /*
@@ -105,7 +115,7 @@ class RepairingItem extends DatabaseObject implements PurchasableItem {
  * PRIVATE METHODS
  */
    
-  private function loadLanguage($lang){
+  private function loadLanguage( $lang ){
     $query = 'select name, description from '.mod.'deth_item_trad where id="'.$this->id.'" and lang="'.$lang.'" and type="repairing" limit 1';
     $result = $this->datalink->dbQuery($query, 'result');
     if (isset($result[0]) and $row = $result[0]){
@@ -118,9 +128,9 @@ class RepairingItem extends DatabaseObject implements PurchasableItem {
     }
   }
 
-  private function isTranslated($lang){
+  private function isTranslated( $lang ){
     $query = 'select id from '.mod.'deth_item_trad where id="'.$this->id.'" and lang="'.$lang.'" and type="repairing"';
-    return ($this->datalink->dbQuery($query, 'rows') > 0);
+    return( $this->datalink->dbQuery( $query, 'rows' ) > 0 );
   }
 
 }

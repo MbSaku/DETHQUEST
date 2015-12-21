@@ -116,12 +116,14 @@ CREATE TABLE IF NOT EXISTS `cdeth_item_armor` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
 CREATE TABLE IF NOT EXISTS `cdeth_item_equipment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
   `price` int(11) NOT NULL,
   `premium` int(11) NOT NULL,
+  `forsale` tinyint(1) NOT NULL,
   `icon` varchar(250) NOT NULL,
   `maleimage` varchar(250) NOT NULL,
   `femaleimage` varchar(250) NOT NULL,
@@ -135,10 +137,11 @@ CREATE TABLE IF NOT EXISTS `cdeth_item_healing` (
   `description` text NOT NULL,
   `price` int(11) NOT NULL,
   `premium` int(11) NOT NULL,
+  `forsale` tinyint(1) NOT NULL,
   `health` int(11) NOT NULL,
   `image` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `cdeth_item_repairing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -146,10 +149,11 @@ CREATE TABLE IF NOT EXISTS `cdeth_item_repairing` (
   `description` text NOT NULL,
   `price` int(11) NOT NULL,
   `premium` int(11) NOT NULL,
+  `forsale` tinyint(1) NOT NULL,
   `armor` int(11) NOT NULL,
   `image` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `cdeth_item_trad` (
   `id` int(11) NOT NULL,

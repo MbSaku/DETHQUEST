@@ -126,7 +126,8 @@ if (!isset($_POST['place'])){
     <p><input type="submit" value="<?php echo Back; ?>"></p>
   </form>
   <h1><?php echo Editing_place.' '.$place->getName(); ?></h1>
-  <form name="editrace" onsubmit="event.preventDefault(); backend.post(this);" enctype="multipart/form-data" method="post" action="">
+  <div class="edblock">
+  <form name="edit" onsubmit="event.preventDefault(); backend.post(this);" enctype="multipart/form-data" method="post" action="">
     <input type="hidden" name="filter" value="<?php echo $filter; ?>">
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="place" value="<?php echo $place->getId(); ?>">
@@ -155,7 +156,9 @@ if (!isset($_POST['place'])){
     <input type="submit" value="'.Delete_picture.'">
     </div>
     </form>';
-  }  
+  }
+  echo '</div>
+  <div class="edblock">';
   if( $place->getId() == 0  ){
     echo '<p>'.Save_place_to_edit_textures.'</p>';
   }else{
@@ -207,5 +210,6 @@ if (!isset($_POST['place'])){
       echo '</div>';
     }
   }
+  echo '</div>';
 }
 ?>

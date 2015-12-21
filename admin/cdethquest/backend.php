@@ -146,7 +146,7 @@ $smmenu = Array(  //Sub-menus
       </div>
     </div>
   </div>  
-<div class="version">DethQuest v15.12.18</div>
+<div class="version">DethQuest v15.12.21</div>
 </div>
 <?php
 if( $site->getDevice() != 'desktop' ){

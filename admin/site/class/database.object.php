@@ -40,7 +40,7 @@ Abstract class DatabaseObject {   //Manages database operations (construct, save
 /*
  * METHODS
  */
-  
+    
   public function save(){
     if ($this->id == 0){
       $query = 'insert into '.$this->table.' (';
@@ -100,6 +100,10 @@ Abstract class DatabaseObject {   //Manages database operations (construct, save
     }else{
       return false;
     }
+  }
+  
+  protected function dbQuery( $query, $type = 'result' ){
+    return $this->datalink->dbQuery( $query, $type );
   }
   
 }

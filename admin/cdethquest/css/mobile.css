@@ -2147,16 +2147,15 @@ textarea:hover {
 
 #cdethquest .shop-item,
 #cdethquest .inventory-item {
-  width:12em;
   padding:0.5em;
   margin:0.5em;
-  display:inline-block;
-  text-align:center;
-  vertical-align:top;
   cursor:pointer;
+  text-align:center;
 }
 
 #cdethquest .item-picture {
+	width:12em;
+	display:inline-block;
   height:4em;
   padding:0.5em;
   margin:0.5em;

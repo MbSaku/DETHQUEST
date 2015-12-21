@@ -6,6 +6,7 @@ class Equipment extends DatabaseObject implements PurchasableItem {
   protected $description = '';
   protected $price = 0;
   protected $premium = 0;
+  protected $forsale = false;
   protected $icon = '';
   protected $maleimage = '';
   protected $femaleimage = '';
@@ -27,62 +28,86 @@ class Equipment extends DatabaseObject implements PurchasableItem {
   public function getId(){
     return $this->id;
   }
+  
   public function getName(){
     return $this->name;
   }
+  public function setName( $string ){
+    $this->name = $string;
+  }
+  
   public function getDescription(){
     return $this->description;
   }
+  public function setDescription( $text ){
+    $this->description = $text;
+  }
+  
   public function getPrice(){
     return $this->price;
   }
+  public function setPrice( $integer ){
+    $this->price = $integer;
+  }
+  
   public function getSellingprice(){
     return floor ($this->price * 0.25);
   }
+  
   public function getPremium(){
     return $this->premium;
   }
+  public function setPremium( $integer ){
+    $this->premium = $integer;
+  }
+  
+  public function getForsale(){
+    return $this->forsale;
+  }
+  public function setForsale( $boolean ){
+    $this->forsale = $boolean;
+  }
+  
   public function getIcon(){
     return $this->icon;
   }
+  public function setIcon( $string ){
+    $this->icon = $string;
+  }
+  
   public function getMaleimage(){
     return $this->maleimage;
   }
+  public function setMaleimage( $string ){
+    $this->maleimage = $string;
+  }
+  
   public function getFemaleimage(){
     return $this->femaleimage;
   }
+  public function setFemaleimage( $string ){
+    $this->femaleimage = $string;
+  }
+  
   public function getPermanent(){
     return $this->permanent;
+  }
+  public function setPermanent( $boolean ){
+    $this->permanent = $boolean;
   }
   
 /*
  * SETTERS
  */
  
-  public function setName($name){
-    $this->name = $name;
-  }
-  public function setDescription($description){
-    $this->description = $description;
-  }
-  public function setPrice($price){
-    $this->price = $price;
-  }
-  public function setPremium($premium){
-    $this->premium = $premium;
-  }
-  public function setIcon($image){
-    $this->icon = $image;
-  }
-  public function setMaleimage($maleimage){
-    $this->maleimage = $maleimage;
-  }
-  public function setFemaleimage($femaleimage){
-    $this->femaleimage = $femaleimage;
-  }
-  public function setPermanent($permanent){
-    $this->permanent = $permanent;
-  }
+  
+  
+  
+  
+  
+  
+  
+  
   
 /*
  * PUBLIC METHODS
