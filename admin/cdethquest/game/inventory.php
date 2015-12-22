@@ -2,6 +2,7 @@
 if( $dethuser->getCharacter() == 0 ){
   echo '<script>backend.link("character","character");</script>';
 }else{
+  include( 'game/interactions.php' );
   $character = new PlayerCharacter( $site->getDatalink(), $dethuser->getCharacter() );
   $types = array( 'healing', 'repairing', 'weapon', 'armor', 'equipment' );
   $titles = array( 
@@ -22,7 +23,11 @@ if( $dethuser->getCharacter() == 0 ){
         echo '<span class="desc"><b>'.$character->getName().'</b></span><br>
         '.Level.' <span class="out">'.$character->getLevel().'</span>'; 
       ?></p>
-      <?php echo $character->renderBars(); ?>
+      <?php echo $character->renderBars(); 
+      if( $character->isPlaying() ){
+        echo '<p>'.Actions.': <span class="turnaction">'.$character->getActions().'</span></p>';
+      }
+      ?>
     </div>
   </div>
   <div class="inventory">
@@ -33,8 +38,7 @@ if( $dethuser->getCharacter() == 0 ){
       ?>
       <div class="editiontitle"><?php echo $titles[$type]; ?></div>
       <?php
-      foreach( $rows as $row ){
-        $irow = new Inventory( $site->getDatalink(), $row );
+      foreach( $rows as $irow ){
         switch( $irow->getType() ){
           case 'healing':     $item = new HealingItem( $site->getDatalink(), $irow->getItem() );    break;
           case 'repairing':   $item = new RepairingItem( $site->getDatalink(), $irow->getItem() );  break;
@@ -63,6 +67,30 @@ if( $dethuser->getCharacter() == 0 ){
             case 'armor':
               echo Hitpoints.': <b>'.$irow->getValue().'</b> / '.$item->getHitpoints().'<br>'.Protection.': <b>'.$item->getProtection().'</b>';
             break;
+            case 'healing':
+              echo Health_amount.': <b>'.$item->getHealth().'</b>
+              <form name="use'.$irow->getId().'" method="post" action="" onsubmit="event.preventDefault(); backend.post(this, false);">
+              <input type="hidden" name="operation" value="heal">
+              <input type="hidden" name="invrow" value="'.$irow->getId().'">
+              <p><input type="submit" value="'.Use_item.'"></p>
+              </form>';
+            break;
+            case 'repairing':
+              echo Armor_amount.': <b>'.$item->getArmor().'</b>
+              <form name="use'.$irow->getId().'" method="post" action="" onsubmit="event.preventDefault(); backend.post(this, false);">
+              <input type="hidden" name="operation" value="repair">
+              <input type="hidden" name="invrow" value="'.$irow->getId().'">
+              <p><input type="submit" value="'.Use_item.'"></p>
+              </form>';
+            break;
+            case 'equipment':
+              if( $item->getMaxhealth() != 0 ){ echo Health_boost.': <b>'.$item->getMaxhealth().'</b><br>'; }
+              if( $item->getSpeed() != 0 ){ echo Speed_boost.': <b>'.$item->getSpeed().'</b><br>'; }
+              if( $item->getStrength() != 0 ){ echo Strength_boost.': <b>'.$item->getStrength().'</b><br>'; }
+              if( $item->getDexterity() != 0 ){ echo Dexterity_boost.': <b>'.$item->getDexterity().'</b><br>'; }
+              if( $item->getConstitution() != 0 ){ echo Constitution_boost.': <b>'.$item->getConstitution().'</b><br>'; }
+              if( $item->getIntelligence() != 0 ){ echo Intelligence_boost.': <b>'.$item->getIntelligence().'</b><br>'; }
+            break;
           }
           echo '<p>'.$item->getDescription().'</p>';
           ?>
@@ -78,9 +106,5 @@ if( $dethuser->getCharacter() == 0 ){
 }
 ?>
 <script type="text/javascript">
-  $( ".inventory .hoverable" ).each( function() {
-    $( this ).click( function() {
-      $( this ).toggleClass( "hovered" );
-    } );
-  });
+  setHoverables( ".inventory .hoverable" );
 </script>

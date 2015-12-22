@@ -11,9 +11,9 @@ if (isset($_POST['filter'])){
 }
 $regspag = 20;
 ?>
-  <h1><?php echo Places; ?></h1>
-  <p><?php echo HelpPlaces; ?></p>
-  <p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>
+<h1><?php echo Places; ?></h1>
+<p><?php echo HelpPlaces; ?></p>
+<p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>
 <?php
 if (!isset($_POST['place'])){
 ?>
@@ -32,13 +32,13 @@ if (!isset($_POST['place'])){
   <div class="editiontitle"><?php echo Places; ?></div>
   <?php
   $query = 'select id from '.mod.'deth_places where name like "%'.$filter.'%" order by name asc';
-  $rows = $site->getDatalink()->dbQuery($query, 'rows');
-  $numpags = ceil ($rows / $regspag);
-  $result = $site->getDatalink()->dbQuery($query, 'result', ($regspag * $pag));
+  $rows = $site->dbQuery( $query, 'rows' );
+  $numpags = ceil( $rows / $regspag );
+  $result = $site->dbQuery( $query, 'result', ( $regspag * $pag ) );
   $i = 0;
-  if ($rows > 0){
-    foreach ($result as $row){
-      if ($i < $regspag){
+  if( $rows > 0 ){
+    foreach( $result as $row ){
+      if( $i < $regspag ){
         $place = new Place( $site->getDatalink(), $row[0] );
         echo '<form name="place'.$place->getId().'" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
         <div class="editionitem">
@@ -87,28 +87,28 @@ if (!isset($_POST['place'])){
   and isset( $_POST['description'] )){
     $place->setName( $_POST['name'] );
     $place->setDescription( $_POST['description'] );
-    if(isset($_FILES['image'])){
+    if( isset( $_FILES['image']) ){
       $place->setImage( $site->imageUpload( $_FILES['image'], $module->getFolder() ) );
     }
-    if (isset($_POST['delete'])){
+    if( isset($_POST['deleteimage'] )
+    or isset( $_POST['delete'] ) ){
+      if( file_exists( $site->getRoot().'uploads/'.$module->getFolder().'/'.$place->getImage() ) ){
+        unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$place->getImage() );
+      }
+      $place->setImage( '' );
+      $place->save();
+    }
+    if( isset( $_POST['delete'] ) ){
       echo $place->delete();
     }else{
       echo $place->save();
     }
-  }
-  if( isset($_POST['deleteimage'] ) ){
-    if( file_exists( $site->getRoot().'uploads/'.$module->getFolder().'/'.$place->getImage() ) ){
-      unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$place->getImage() );
-    }
-    $place->setImage( '' );
-    $place->save();
   }
   if( isset( $_FILES['texture'] ) 
   and isset( $_POST['type'] ) ){
     $square = new Square( $site->getDatalink() );
     $square->setPlace( $place->getId() );
     $square->setType( $_POST['type'] );
-    
     $square->setTexture( $site->imageUpload( $_FILES['texture'], $module->getFolder() ) );
     echo $square->save();
   }
@@ -131,32 +131,26 @@ if (!isset($_POST['place'])){
     <input type="hidden" name="filter" value="<?php echo $filter; ?>">
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="place" value="<?php echo $place->getId(); ?>">
+    <p class="formimg">
+      <?php
+      if( $place->getImage() == '' ){
+        echo Place_image.'<br>
+        <input type="file" name="image">';
+      }else{
+        echo Place_image.'<br>
+        <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$place->getImage().'"><br>
+        <input type="checkbox" name="deleteimage" value="1"> '.Delete_picture;
+      }
+      ?>
+    </p>
     <p class="pinput"><?php echo Place_name; ?><br>
     <input type="text" name="name" value="<?php echo $place->getName(); ?>"></p>    
     <p><?php echo Place_description; ?><br>
     <textarea name="description"><?php echo $place->getDescription(); ?></textarea></p>    
     <p><input type="submit" value="<?php echo Save_place; ?>">
     <input type="checkbox" name="delete" value="1"><?php echo Delete_place; ?></p>
-    <?php 
-    if ($place->getImage() == ''){
-      echo '<div class="formimg">'.Place_image.'<br>
-      <input type="file" name="image"></div>';
-    }
-    ?>
   </form>
 <?php
-  if ($place->getImage() != ''){
-    echo '<form name="image" onsubmit="event.preventDefault(); backend.post(this,false);" method="post" action="">
-    <input type="hidden" name="filter" value="'.$filter.'">
-    <input type="hidden" name="pag" value="'.$pag.'">
-    <input type="hidden" name="place" value="'.$place->getId().'">
-    <input type="hidden" name="deleteimage" value="1">
-    <div class="formimg">
-    <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$place->getImage().'"><br>
-    <input type="submit" value="'.Delete_picture.'">
-    </div>
-    </form>';
-  }
   echo '</div>
   <div class="edblock">';
   if( $place->getId() == 0  ){
@@ -193,7 +187,8 @@ if (!isset($_POST['place'])){
       <input type="submit" value="'.Upload.'">
       </form>
       </div><br>';
-      $result = $site->getDatalink()->dbQuery( 'select id from '.mod.'deth_squares where place="'.$place->getId().'" and type="'.$type.'"', 'result' );
+      $result = $site->dbQuery( 'select id from '.mod.'deth_squares 
+      where place="'.$place->getId().'" and type="'.$type.'"', 'result' );
       foreach( $result as $row ){
         $square = new Square( $site->getDatalink(), $row[0] );
         echo '<div class="place-texture">

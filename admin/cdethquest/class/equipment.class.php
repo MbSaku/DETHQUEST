@@ -4,6 +4,12 @@ class Equipment extends DatabaseObject implements PurchasableItem {
   protected $id = 0;
   protected $name = '';
   protected $description = '';
+  protected $maxhealth = 0;
+  protected $speed = 0;
+  protected $strength = 0;
+  protected $dexterity = 0;
+  protected $constitution = 0;
+  protected $intelligence = 0;
   protected $price = 0;
   protected $premium = 0;
   protected $forsale = false;
@@ -16,13 +22,13 @@ class Equipment extends DatabaseObject implements PurchasableItem {
  * CONSTRUCTOR
  */
  
-  public function __construct($datalink, $id = 0){
+  public function __construct( $datalink, $id = 0 ){
     parent::__construct( $datalink, mod.'deth_item_equipment', get_object_vars( $this ), $id );
-    $this->loadLanguage($_SESSION['lang']);
+    $this->loadLanguage( $_SESSION['lang'] );
   }
   
 /*
- * GETTERS
+ * GETTERS AND SETTERS
  */
   
   public function getId(){
@@ -41,6 +47,48 @@ class Equipment extends DatabaseObject implements PurchasableItem {
   }
   public function setDescription( $text ){
     $this->description = $text;
+  }
+  
+  public function getMaxhealth(){
+    return $this->maxhealth;
+  }
+  public function setMaxhealth( $integer ){
+    $this->maxhealth = $integer;
+  }
+  
+  public function getSpeed(){
+    return $this->speed;
+  }
+  public function setSpeed( $integer ){
+    $this->speed = $integer;
+  }
+  
+  public function getStrength(){
+    return $this->strength;
+  }
+  public function setStrength( $integer ){
+    $this->strength = $integer;
+  }
+  
+  public function getDexterity(){
+    return $this->dexterity;
+  }
+  public function setDexterity( $integer ){
+    $this->dexterity = $integer;
+  }
+  
+  public function getConstitution(){
+    return $this->constitution;
+  }
+  public function setConstitution( $integer ){
+    $this->constitution = $integer;
+  }
+  
+  public function getIntelligence(){
+    return $this->intelligence;
+  }
+  public function setIntelligence( $integer ){
+    $this->intelligence = $integer;
   }
   
   public function getPrice(){
@@ -97,19 +145,6 @@ class Equipment extends DatabaseObject implements PurchasableItem {
   }
   
 /*
- * SETTERS
- */
- 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-/*
  * PUBLIC METHODS
  */
   
@@ -140,12 +175,12 @@ class Equipment extends DatabaseObject implements PurchasableItem {
     }
     return $message;
   }
-
+  
 /*
  * PRIVATE METHODS
  */
-   
-  private function loadLanguage($lang){
+  
+  private function loadLanguage( $lang ){
     $query = 'select name, description from '.mod.'deth_item_trad where id="'.$this->id.'" and lang="'.$lang.'" and type="equipment" limit 1';
     $result = $this->datalink->dbQuery($query, 'result');
     if (isset($result[0]) and $row = $result[0]){
@@ -157,8 +192,8 @@ class Equipment extends DatabaseObject implements PurchasableItem {
       }
     }
   }
-
-  private function isTranslated($lang){
+  
+  private function isTranslated( $lang ){
     $query = 'select id from '.mod.'deth_item_trad where id="'.$this->id.'" and lang="'.$lang.'" and type="equipment"';
     return ($this->datalink->dbQuery($query, 'rows') > 0);
   }

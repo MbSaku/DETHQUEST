@@ -116,11 +116,16 @@ CREATE TABLE IF NOT EXISTS `cdeth_item_armor` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-
 CREATE TABLE IF NOT EXISTS `cdeth_item_equipment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
+  `maxhealth` int(11) NOT NULL,
+  `speed` int(11) NOT NULL,
+  `strength` int(11) NOT NULL,
+  `dexterity` int(11) NOT NULL,
+  `constitution` int(11) NOT NULL,
+  `intelligence` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `premium` int(11) NOT NULL,
   `forsale` tinyint(1) NOT NULL,

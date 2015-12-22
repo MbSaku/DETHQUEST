@@ -1,18 +1,18 @@
 <?php
-if (isset($_POST['pag'])){
+if( isset( $_POST['pag'] ) ){
   $pag = $_POST['pag'];
 }else{
   $pag = 0;
 }
-if (isset($_POST['filter'])){
+if( isset( $_POST['filter'] ) ){
   $filter = $_POST['filter'];
 }else{
   $filter = '';
 }
 $regspag = 20;
 ?>
-  <p><?php echo HelpWeapons; ?></p>  
-  <p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>  
+<p><?php echo HelpWeapons; ?></p>  
+<p><?php echo Active_language; ?> <b><?php echo $site->activeLanguage(); ?></b></p>  
 <?php
 if (!isset($_POST['item'])){
 ?>
@@ -31,14 +31,14 @@ if (!isset($_POST['item'])){
   <div class="editiontitle"><?php echo Weapons; ?></div>  
   <?php
   $query = 'select id from '.mod.'deth_item_weapon where name like "%'.$filter.'%" or type like "%'.$filter.'%" order by type asc, price asc, premium asc, name asc';
-  $rows = $site->getDatalink()->dbQuery($query, 'rows');
-  $numpags = ceil ($rows / $regspag);
-  $result = $site->getDatalink()->dbQuery($query, 'result', ($regspag * $pag));
+  $rows = $site->dbQuery( $query, 'rows' );
+  $numpags = ceil( $rows / $regspag );
+  $result = $site->dbQuery( $query, 'result', ( $regspag * $pag ) );
   $i = 0;
-  if ($rows > 0){
-    foreach ($result as $row){
-      if ($i < $regspag){
-        $item = new Weapon($site->getDatalink(), $row[0]);
+  if( $rows > 0 ){
+    foreach( $result as $row ){
+      if( $i < $regspag ){
+        $item = new Weapon( $site->getDatalink(), $row[0] );
         echo '<form name="item'.$item->getId().'" onsubmit="event.preventDefault();backend.post(this);" method="post" action="">
         <div class="editionitem">
         <input type="hidden" name="pag" value="'.$pag.'">
@@ -60,20 +60,20 @@ if (!isset($_POST['item'])){
     }
     echo '<div class="pags">';
     $dots = false;
-    for ($a = 0; $a < $numpags; $a++){
-      if ($a > $numpags - 2
+    for( $a = 0; $a < $numpags; $a++ ){
+      if( $a > $numpags - 2
       or $a < 3
-      or ($a > $pag - 5 and $a < $pag + 5)){
+      or( $a > $pag - 5 and $a < $pag + 5 ) ){
         echo '<form name="pag'.$a.'" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
         <input type="hidden" name="pag" value="'.$a.'">
         <input type="hidden" name="filter" value="'.$filter.'">
         <input type="submit" value="';
-        if ($a == $pag){ echo '['.$a.']'; }else{ echo $a; }
+        if( $a == $pag ){ echo '['.$a.']'; }else{ echo $a; }
         echo '">
         </form>';
         $dots = false;
       }else{
-        if (!$dots){
+        if( !$dots ){
           echo ' ... ';
           $dots = true;
         }
@@ -84,7 +84,7 @@ if (!isset($_POST['item'])){
     echo '<p class="error">'.No_data_to_show.'</p>';
   }
 }else{
-  $item = new Weapon($site->getDatalink(), $_POST['item']);
+  $item = new Weapon( $site->getDatalink(), $_POST['item'] );
   if( isset( $_POST['name'] )
   and isset( $_POST['price'] )
   and isset( $_POST['premium'] )
@@ -119,40 +119,41 @@ if (!isset($_POST['item'])){
     $item->setPiercing( $_POST['piercing'] );
     $item->setClipsize( $_POST['clipsize'] );
     $item->setHands($_POST['hands']);
-    if (isset($_FILES['icon'])){
-      $item->setIcon($site->imageUpload($_FILES['icon'], $module->getFolder()));
+    if( isset( $_FILES['icon'] ) ){
+      $item->setIcon( $site->imageUpload( $_FILES['icon'], $module->getFolder() ) );
     }
-    if (isset($_FILES['maleimage'])){
-      $item->setMaleimage($site->imageUpload($_FILES['maleimage'], $module->getFolder()));
+    if( isset( $_FILES['maleimage'] ) ){
+      $item->setMaleimage( $site->imageUpload( $_FILES['maleimage'], $module->getFolder() ) );
     }
-    if (isset($_FILES['femaleimage'])){
+    if( isset( $_FILES['femaleimage'])){
       $item->setFemaleimage($site->imageUpload($_FILES['femaleimage'], $module->getFolder()));
     }
-    if (isset($_POST['delete'])){
+    if( isset( $_POST['deleteicon'] ) 
+    or isset( $_POST['delete'] ) ){
+      if( file_exists( $site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getIcon() ) ){
+        unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getIcon() );
+      }
+      $item->setIcon( '' );
+      $item->save();
+    }
+    if( isset( $_POST['delete'] ) ){
       echo $item->delete();
     }else{
       echo $item->save();
     }
   }
-  if (isset($_POST['deleteicon'])){
-    if(file_exists($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getIcon())){
-      unlink($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getIcon());
+  if( isset( $_POST['deletemaleimage'] ) ){
+    if( file_exists($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getMaleimage() ) ){
+      unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getMaleimage() );
     }
-    $item->setIcon('');
+    $item->setMaleimage( '' );
     $item->save();
   }
-  if (isset($_POST['deletemaleimage'])){
-    if(file_exists($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getMaleimage())){
-      unlink($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getMaleimage());
+  if( isset( $_POST['deletefemaleimage'] ) ){
+    if( file_exists( $site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getFemaleimage() ) ){
+      unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getFemaleimage() );
     }
-    $item->setMaleimage('');
-    $item->save();
-  }
-  if (isset($_POST['deletefemaleimage'])){
-    if(file_exists($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getFemaleimage())){
-      unlink($site->getRoot().'uploads/'.$module->getFolder().'/'.$item->getFemaleimage());
-    }
-    $item->setFemaleimage('');
+    $item->setFemaleimage( '' );
     $item->save();
   }
   ?>
@@ -167,6 +168,18 @@ if (!isset($_POST['item'])){
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="item" value="<?php echo $item->getId(); ?>">
     <div class="edblock">
+      <p class="formimg">
+        <?php
+        if( $item->getIcon() == '' ){
+          echo Item_image.'<br>
+          <input type="file" name="icon">';
+        }else{
+          echo Item_image.'<br>
+          <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'"><br>
+          <input type="checkbox" name="deleteicon" value="1"> '.Delete_picture;
+        }
+        ?>
+      </p>
       <p class="pinput"><?php echo Item_name; ?>:<br>
       <input type="text" name="name" value="<?php echo $item->getName(); ?>"></p>
       <p class="pinput"><?php echo Item_type; ?>:<br>
@@ -201,10 +214,6 @@ if (!isset($_POST['item'])){
     <p><input type="submit" value="<?php echo Save_item; ?>">
     <input type="checkbox" name="delete" value="1"><?php echo Delete_item; ?></p>
     <?php 
-    if ($item->getIcon() == ''){
-      echo '<div class="formimg">'.Item_image.'<br>
-      <input type="file" name="icon"></div>';
-    }
     if ($item->getMaleimage() == ''){
       echo '<div class="formimg pinput">'.Item_male_image.':<br>
       <div class="equipment-preview" style="background-image:url('.$_GET['root'].'admin/'.$module->getFolder().'/css/images/generic-male.png)">
@@ -212,7 +221,7 @@ if (!isset($_POST['item'])){
       <input type="file" name="maleimage">
       </div>';
     }
-    if ($item->getFemaleimage() == ''){
+    if( $item->getFemaleimage() == '' ){
       echo '<div class="formimg pinput">'.Item_female_image.':<br>
       <div class="equipment-preview" style="background-image:url('.$_GET['root'].'admin/'.$module->getFolder().'/css/images/generic-female.png)">
       </div><br>
@@ -221,20 +230,8 @@ if (!isset($_POST['item'])){
     }
     ?>    
   </form>
-  <?php  
-  if ($item->getIcon() != ''){
-    echo '<form name="icon" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
-    <input type="hidden" name="filter" value="'.$filter.'">
-    <input type="hidden" name="pag" value="'.$pag.'">
-    <input type="hidden" name="item" value="'.$item->getId().'">
-    <input type="hidden" name="deleteicon" value="1">
-    <div class="formimg">
-    <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$item->getIcon().'"><br>
-    <input type="submit" value="'.Delete_picture.'">
-    </div>
-    </form>';
-  }
-  if ($item->getMaleimage() != ''){
+  <?php
+  if( $item->getMaleimage() != '' ){
     echo '<form name="maleimage" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
     <input type="hidden" name="filter" value="'.$filter.'">
     <input type="hidden" name="pag" value="'.$pag.'">
@@ -248,7 +245,7 @@ if (!isset($_POST['item'])){
     </div>
     </form>';
   }
-  if ($item->getFemaleimage() != ''){
+  if( $item->getFemaleimage() != '' ){
     echo '<form name="image" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
     <input type="hidden" name="filter" value="'.$filter.'">
     <input type="hidden" name="pag" value="'.$pag.'">

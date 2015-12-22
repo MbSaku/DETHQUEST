@@ -122,6 +122,14 @@ if (!isset($_POST['race'])){
     if (isset($_FILES['icon'])){
       $race->setIcon( $site->imageUpload( $_FILES['icon'], $module->getFolder() ) );
     }
+    if( isset($_POST['deleteicon'] ) 
+    or isset( $_POST['delete'] ) ){
+      if( file_exists( $site->getRoot().'uploads/'.$module->getFolder().'/'.$race->getIcon() ) ){
+        unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$race->getIcon() );
+      }
+      $race->setIcon( '' );
+      $race->save();
+    }
     if( isset( $_POST['delete'] ) ){
       echo $race->delete();
     }else{
@@ -136,13 +144,6 @@ if (!isset($_POST['race'])){
       }
     }
   }
-  if (isset($_POST['deleteicon'])){
-    if( file_exists( $site->getRoot().'uploads/'.$module->getFolder().'/'.$race->getIcon() ) ){
-      unlink( $site->getRoot().'uploads/'.$module->getFolder().'/'.$race->getIcon() );
-    }
-    $race->setIcon('');
-    $race->save();
-  }
   ?>
   <form name="addnew" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
     <input type="hidden" name="filter" value="<?php echo $filter; ?>">
@@ -154,7 +155,19 @@ if (!isset($_POST['race'])){
     <input type="hidden" name="filter" value="<?php echo $filter; ?>">
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="race" value="<?php echo $race->getId(); ?>">
-    <div class="edblock">    
+    <div class="edblock">
+      <p class="formimg">
+        <?php
+        if( $race->getIcon() == '' ){
+          echo Race_image.'<br>
+          <input type="file" name="icon">';
+        }else{
+          echo Race_image.'<br>
+          <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$race->getIcon().'"><br>
+          <input type="checkbox" name="deleteicon" value="1"> '.Delete_picture;
+        }
+        ?>
+      </p>
       <p class="pinput"><?php echo Race_name; ?><br>
       <input type="text" name="name" value="<?php echo $race->getName(); ?>"></p>      
       <p class="pinput"><?php echo Race_hands; ?><br>
@@ -246,26 +259,8 @@ if (!isset($_POST['race'])){
     </div>
     <p><input type="submit" value="<?php echo Save_race; ?>">
     <input type="checkbox" name="delete" value="1"><?php echo Delete_race; ?></p>
-    <?php 
-    if ($race->getIcon() == ''){
-      echo '<div class="formimg">'.Race_image.'<br>
-      <input type="file" name="icon"></div>';
-    }
-    ?>
   </form>
   <?php
-  if ($race->getIcon() != ''){
-    echo '<form name="icon" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
-    <input type="hidden" name="filter" value="'.$filter.'">
-    <input type="hidden" name="pag" value="'.$pag.'">
-    <input type="hidden" name="race" value="'.$race->getId().'">
-    <input type="hidden" name="deleteicon" value="1">
-    <div class="formimg">
-    <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$race->getIcon().'"><br>
-    <input type="submit" value="'.Delete_picture.'">
-    </div>
-    </form>';
-  }
   if($race->getId() == 0){
     echo '<p>'.Save_race_to_edit_further.'</p>';
   }else{
@@ -387,7 +382,7 @@ if (!isset($_POST['race'])){
         </div>
         <div class="field">
         <p><input type="text" name="name" value="'.$race->getVariantName( $row[0], $type ).'" style="width:6em;">
-        <input type="submit" value="'.Save_variant.'">
+        <input type="submit" value="'.Save_variant.'"><br>
         <input type="checkbox" name="deletevariant" value="1">'.Check_to_delete.'</p>
         </div>
         </form>

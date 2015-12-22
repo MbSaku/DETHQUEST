@@ -34,7 +34,7 @@ class PlayerCharacter extends DatabaseObject {
   }
   
 /*
- * GETTERS
+ * GETTERS AND SETTERS
  */
  
   public function getId(){
@@ -668,14 +668,26 @@ class PlayerCharacter extends DatabaseObject {
     return( $equipment );
   }
 
-  public function getInventory( $type ){
-    $inventory = Array();
-    $result = $this->datalink->dbQuery( 'select id from '.mod.'deth_character_item 
-    where type="'.$type.'" and equipped=0 and playercharacter="'.$this->id.'"', 'result' );
-    foreach( $result as $row ){
-      $inventory[] = $row[0];
+  public function getInventory( $type = 'all' ){
+    $inventory = array();
+    if( $type != 'all' ){
+      $query = 'select id 
+      from '.mod.'deth_character_item 
+      where type="'.$type.'" and equipped=0 
+      and playercharacter="'.$this->id.'"
+      order by id desc';
+    }else{
+      $query = 'select id 
+      from '.mod.'deth_character_item 
+      where equipped=0 
+      and playercharacter="'.$this->id.'"
+      order by type desc, id desc';
     }
-    return( $inventory );
+    $result = $this->dbQuery( $query );
+    foreach( $result as $row ){
+      $inventory[] = new Inventory( $this->datalink, $row[0] );
+    }
+    return $inventory;
   }
   
   public function equip( $inventoryid ){
@@ -799,6 +811,43 @@ class PlayerCharacter extends DatabaseObject {
       where id="'.$inventoryid.'"', 'query' ) > 0 ){
         $message = '<p class="fine">'.Item_reloaded.'</p>';
       }
+    }
+    return $message;
+  }
+  
+  public function heal( $inventoryid ){
+    $message = '';
+    $line = new Inventory( $this->datalink, $inventoryid );
+    if( $line->getId() != 0 
+    and $line->getType() == 'healing' ){
+      $item = new HealingItem( $this->datalink, $line->getItem() );
+      $this->setHealth( $this->health + $item->getHealth() );
+      $this->save();
+      $line->delete();
+      $message = '<p class="fine">'.Used_item.' <b>'.$item->getName().'</b></p>';
+    }
+    return $message;
+  }
+
+  public function repair( $inventoryid ){
+    $message = '';
+    $line = new Inventory( $this->datalink, $inventoryid );
+    $equipment = $this->getEquipment( 'armor');
+    $armorline = new Inventory( $this->datalink, $equipment[0][0] );
+    $armor = new Armor( $this->datalink, $armorline->getItem() );
+    if( $line->getId() != 0 
+    and $armorline->getId() != 0 
+    and $line->getType() == 'repairing' 
+    and $armorline->getValue() < $armor->getHitpoints() ){
+      $item = new RepairingItem( $this->datalink, $line->getItem() );
+      $amount = $armorline->getValue() + $item->getArmor();
+      if( $amount > $armor->getHitpoints() ){
+        $amount = $armor->getHitpoints();
+      }
+      $armorline->setValue( $amount );
+      $armorline->save();
+      $line->delete();
+      $message = '<p class="fine">'.Used_item.' <b>'.$item->getName().'</b></p>';
     }
     return $message;
   }

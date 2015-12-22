@@ -163,7 +163,6 @@ a {
 form {
   margin:0;
   padding:0;
-  display:inline;
 }
 
 fieldset {
@@ -583,7 +582,7 @@ textarea {
 
 .pinput {
   display:inline-block;
-  vertical-align:bottom;
+  vertical-align:top;
 }
 
 .version {

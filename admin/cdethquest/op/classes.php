@@ -113,18 +113,19 @@ if (!isset($_POST['class'])){
     }else{
       $class->setPlayable(false);
     }
-    if (isset($_POST['delete'])){
+    if( isset($_POST['deleteicon'] ) 
+    or isset( $_POST['delete'] ) ){
+      if(file_exists($site->getRoot().'uploads/'.$module->getFolder().'/'.$class->getIcon())){
+        unlink($site->getRoot().'uploads/'.$module->getFolder().'/'.$class->getIcon());
+      }
+      $class->setIcon('');
+      $class->save();
+    }
+    if( isset( $_POST['delete'] ) ){
       echo $class->delete();
     }else{
       echo $class->save();
     }
-  }
-  if (isset($_POST['deleteicon'])){
-    if(file_exists($site->getRoot().'uploads/'.$module->getFolder().'/'.$class->getIcon())){
-      unlink($site->getRoot().'uploads/'.$module->getFolder().'/'.$class->getIcon());
-    }
-    $class->setIcon('');
-    $class->save();
   }
   if (isset($_POST['setequipment'])){
     $class->removeItems();
@@ -147,6 +148,18 @@ if (!isset($_POST['class'])){
     <input type="hidden" name="pag" value="<?php echo $pag; ?>">
     <input type="hidden" name="class" value="<?php echo $class->getId(); ?>">
     <div class="edblock">
+      <p class="formimg">
+        <?php
+        if( $class->getIcon() == '' ){
+          echo Class_image.'<br>
+          <input type="file" name="icon">';
+        }else{
+          echo Class_image.'<br>
+          <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$class->getIcon().'"><br>
+          <input type="checkbox" name="deleteicon" value="1"> '.Delete_picture;
+        }
+        ?>
+      </p>
       <p class="pinput"><?php echo Class_name; ?><br>
       <input type="text" name="name" value="<?php echo $class->getName(); ?>"></p>
       <p class="pinput">
@@ -211,31 +224,13 @@ if (!isset($_POST['class'])){
     </div>
     <p><input type="submit" value="<?php echo Save_class; ?>">
     <input type="checkbox" name="delete" value="1"><?php echo Delete_class; ?></p>
-    <?php 
-    if ($class->getIcon() == ''){
-      echo '<div class="formimg">'.Class_image.'<br>
-      <input type="file" name="icon"></div>';
-    }
-    ?>
   </form>
   <?php
-  if ($class->getIcon() != ''){
-    echo '<form name="icon" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
-    <input type="hidden" name="filter" value="'.$filter.'">
-    <input type="hidden" name="pag" value="'.$pag.'">
-    <input type="hidden" name="class" value="'.$class->getId().'">
-    <input type="hidden" name="deleteicon" value="1">
-    <div class="formimg">
-    <img src="'.$_GET['root'].'uploads/'.$module->getFolder().'/'.$class->getIcon().'"><br>
-    <input type="submit" value="'.Delete_picture.'">
-    </div>
-    </form>';
-  }
   if($class->getId() == 0){
     echo '<p>'.Save_class_to_manage_starting_equipment.'</p>';
   }else{
     $types = Array( "equipment", "armor" );
-    echo '<form name="equipment" onsubmit="event.preventDefault(); backend.post(this);" enctype="multipart/form-data" method="post" action="">
+    echo '<form name="equipment" onsubmit="event.preventDefault(); backend.post(this);" enctype="multipart/form-data" method="post" action="" class="class-equipment">
     <p>'.Equipment_worth.': <span id="classworth">'.$class->calculateWorth().Coins.'</span> / 1000</p>
     <input type="hidden" name="pag" value="'.$pag.'">
     <input type="hidden" name="filter" value="'.$filter.'">

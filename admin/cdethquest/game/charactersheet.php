@@ -202,31 +202,26 @@ if($dethuser->getCharacter() == 0){
       <?php 
       echo Equip.': <select name="invrow">
       <option value="0">'.Select_item.'</option>';
-      $result = $site->getDatalink()->dbQuery( 'select id, item, type, value, max 
-      from '.mod.'deth_character_item 
-      where playercharacter="'.$character->getId().'"
-      and (type="weapon" or type="armor" or type="equipment")
-      and equipped=0
-      order by type asc' , 'result' );
-      foreach( $result as $row ){
+      $inventory = array_merge( $character->getInventory( 'weapon' ), $character->getInventory( 'armor' ), $character->getInventory( 'equipment' ) );
+      foreach( $inventory as $line ){
         $info = '';
-        switch( $row[2] ){
+        switch( $line->getType() ){
           case 'armor':
           default:
-            $item = new Armor( $site->getDatalink(), $row[1] );
-            $info = $row[3].'/'.$item->getHitpoints();
+            $item = new Armor( $site->getDatalink(), $line->getItem() );
+            $info = $line->getValue().'/'.$item->getHitpoints();
           break;
           case 'weapon':
-            $item = new Weapon( $site->getDatalink(), $row[1] );
+            $item = new Weapon( $site->getDatalink(), $line->getItem() );
             if( $item->getClipsize() > 0 ){
-              $info = $row[3].'/'.$item->getClipsize().' ('.$row[4].')';
+              $info = $line->getValue().'/'.$item->getClipsize().' ('.$line->getMax().')';
             }
           break;
           case 'equipment':
-            $item = new Equipment( $site->getDatalink(), $row[1] );
-          break;
+            $item = new Equipment( $site->getDatalink(), $line->getItem() );
+          break;          
         }
-        echo '<option value="'.$row[0].'"><b>'.$item->getName().'</b> '.$info.'</option>';
+        echo '<option value="'.$line->getId().'"><b>'.$item->getName().'</b> '.$info.'</option>';
       }
       echo '</select> <input type="submit" value="'.Equip.'">';
       ?>

@@ -871,6 +871,10 @@ textarea:hover {
   text-shadow: 0 0 5px #FFC568;
 }
 
+#cdethquest .class-equipment .pinput {
+	vertical-align:top;
+}
+
 /* CHARACTER GENERATION */
 
 #cdethquest .chargen {
@@ -2250,7 +2254,7 @@ textarea:hover {
   display:inline-block;
   text-align:center;
   width:70%;
-  margin:0;
+  margin:0 0 1em 0;
   padding:0.5em;
   -webkit-appearance:none;
   -moz-box-sizing: border-box;
@@ -2270,6 +2274,10 @@ textarea:hover {
   margin:0.5em;
   cursor:pointer;
   text-align:left;
+}
+
+#cdethquest .shop-item {
+  border-top:0.1em dashed #888888;
 }
 
 #cdethquest .inventory-item {

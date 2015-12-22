@@ -1,10 +1,10 @@
 <?php
-if (isset($_POST['pag'])){
+if( isset( $_POST['pag'] ) ){
   $pag = $_POST['pag'];
 }else{
   $pag = 0;
 }
-if (isset($_POST['filter'])){
+if( isset( $_POST['filter'] ) ){
   $filter = $_POST['filter'];
 }else{
   $filter = '';
@@ -24,13 +24,13 @@ if (!isset($_POST['character'])){
   <div class="editiontitle"><?php echo PCs; ?></div>
   <?php
   $query = 'select id from '.mod.'deth_characters where name like "%'.$filter.'%" and pc="1" order by name asc';
-  $rows = $site->getDatalink()->dbQuery($query, 'rows');
-  $numpags = ceil ($rows / $regspag);
+  $rows = $site->dbQuery( $query, 'rows' );
+  $numpags = ceil( $rows / $regspag );
   $result = $site->getDatalink()->dbQuery( $query, 'result', ( $regspag * $pag ) );
   $i = 0;
-  if ($rows > 0){
-    foreach ($result as $row){
-      if ($i < $regspag){
+  if( $rows > 0 ){
+    foreach( $result as $row ){
+      if( $i < $regspag ){
         $character = new PlayerCharacter( $site->getDatalink(), $row[0] );
         $race = new Race($site->getDatalink(), $character->getRace() );
         $class = new CharacterClass( $site->getDatalink(), $character->getClass() );
@@ -185,31 +185,26 @@ if (!isset($_POST['character'])){
       <?php 
       echo Equip.': <select name="invrow">
       <option value="0">'.Select_item.'</option>';
-      $result = $site->getDatalink()->dbQuery( 'select id, item, type, value, max 
-      from '.mod.'deth_character_item 
-      where playercharacter="'.$character->getId().'"
-      and (type="weapon" or type="armor" or type="equipment")
-      and equipped=0
-      order by type asc' , 'result' );
-      foreach ($result as $row){
+      $inventory = array_merge( $character->getInventory( 'weapon' ), $character->getInventory( 'armor' ), $character->getInventory( 'equipment' ) );
+      foreach( $inventory as $line ){
         $info = '';
-        switch( $row[2] ){
+        switch( $line->getType() ){
           case 'armor':
           default:
-            $item = new Armor( $site->getDatalink(), $row[1] );
-            $info = $row[3].'/'.$item->getHitpoints();
+            $item = new Armor( $site->getDatalink(), $line->getItem() );
+            $info = $line->getValue().'/'.$item->getHitpoints();
           break;
           case 'weapon':
-            $item = new Weapon( $site->getDatalink(), $row[1] );
+            $item = new Weapon( $site->getDatalink(), $line->getItem() );
             if( $item->getClipsize() > 0 ){
-              $info = $row[3].'/'.$item->getClipsize().' ('.$row[4].')';
+              $info = $line->getValue().'/'.$item->getClipsize().' ('.$line->getMax().')';
             }
           break;
           case 'equipment':
-            $item = new Equipment( $site->getDatalink(), $row[1] );
-          break;
+            $item = new Equipment( $site->getDatalink(), $line->getItem() );
+          break;          
         }
-        echo '<option value="'.$row[0].'"><b>'.$item->getName().'</b> '.$info.'</option>';
+        echo '<option value="'.$line->getId().'"><b>'.$item->getName().'</b> '.$info.'</option>';
       }
       echo '</select> <input type="submit" value="'.Equip.'">';
       ?>
@@ -310,24 +305,41 @@ if (!isset($_POST['character'])){
     <div class="equipsheet">
       <?php
       echo '<h1>'.Inventory.'</h1>';
-      $result = $site->getDatalink()->dbQuery( 'select item, type, equipped, value, max from '.mod.'deth_character_item 
-      where playercharacter="'.$character->getId().'" and equipped=0' , 'result' );
-      foreach ($result as $row){
+      $inventory = $character->getInventory();
+      foreach( $inventory as $line ){
         $value = '';
-        switch($row[1]){
+        switch( $line->getType() ){
+          case 'armor':
+          default:
+            $item = new Armor( $site->getDatalink(), $line->getItem() );
+            $value = Hitpoints.': <b>'.$line->getValue().'</b> / '.$item->getHitpoints().'<br>'.Protection.': <b>'.$item->getProtection().'</b>';
+          break;
           case 'weapon':
-            $item = new Weapon( $site->getDatalink(), $row[0] );
+            $item = new Weapon( $site->getDatalink(), $line->getItem() );
             if( $item->getClipsize() > 0 ){
-              $value = Ammo.': <b>'.$row[3].'</b> / '.$item->getClipsize().'<br>'.Clips.': <b>'.$row[4].'</b>';
+              $value = Ammo.': <b>'.$line->getValue().'</b> / '.$item->getClipsize().'<br>'.Clips.': <b>'.$line->getMax().'</b>';
             }
           break;
-          case 'armor':
-            $item = new Armor( $site->getDatalink(), $row[0] );
-            $value = Hitpoints.': <b>'.$row[3].'</b> / '.$item->getHitpoints().'<br>'.Protection.': <b>'.$item->getProtection().'</b>';
-          break;
           case 'equipment':
+            $item = new Equipment( $site->getDatalink(), $line->getItem() );
+            if( $item->getMaxhealth() != 0 ){ $value .= Health_boost.': <b>'.$item->getMaxhealth().'</b><br>'; }
+            if( $item->getSpeed() != 0 ){ $value .= Speed_boost.': <b>'.$item->getSpeed().'</b><br>'; }
+            if( $item->getStrength() != 0 ){ $value .= Strength_boost.': <b>'.$item->getStrength().'</b><br>'; }
+            if( $item->getDexterity() != 0 ){ $value .= Dexterity_boost.': <b>'.$item->getDexterity().'</b><br>'; }
+            if( $item->getConstitution() != 0 ){ $value .= Constitution_boost.': <b>'.$item->getConstitution().'</b><br>'; }
+            if( $item->getIntelligence() != 0 ){ $value .= Intelligence_boost.': <b>'.$item->getIntelligence().'</b><br>'; }
+          break;
+          case 'healing':
+            $item = new HealingItem( $site->getDatalink(), $line->getItem() );
+            $value = Health_amount.': <b>'.$item->getHealth().'</b>';
+          break;
+          case 'repairing':
+            $item = new RepairingItem( $site->getDatalink(), $line->getItem() );
+            $value = Armor_amount.': <b>'.$item->getArmor().'</b>';
+          break;
           default:
-            $item = new Equipment( $site->getDatalink(), $row[0] );
+            $item = new Equipment( $site->getDatalink(), $line->getItem() );
+          break;          
         }
         echo '<div class="editionitem">
         <div class="field">

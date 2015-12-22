@@ -13,6 +13,12 @@ if( isset( $_POST['operation'] ) ){
       case 'reload':
         echo $player->reload( $_POST['invrow'] );
       break;
+      case 'heal':
+        echo $player->heal( $_POST['invrow'] );
+      break;
+      case 'repair':
+        echo $player->repair( $_POST['invrow'] );
+      break;
     }
   }
   if( $player->isActive() and $player->getActions() == 0 ){

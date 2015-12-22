@@ -189,7 +189,7 @@ define('Back_to_items', "Back to list");
 define('Editing_item', "Editing item");
 define('Save_item', "Save item");
 define('Delete_item', "Check to delete this item");
-define('Item_image', "Upload an image for this item");
+define('Item_image', "Item image");
 //Healing items
 define('HelpHealing', "Here you can manage and edit all the healing items available to players.");
 define('Healing_items', "Healing items");
@@ -204,6 +204,12 @@ define('Equipment_items', "Available equipment");
 define('Item_male_image', "Male depiction");
 define('Item_female_image', "Female depiction");
 define('Permanent', "Permanent");
+define('Health_boost', "Health");
+define('Speed_boost', "Speed");
+define('Dexterity_boost', "Dexterity");
+define('Strength_boost', "Strength");
+define('Constitution_boost', "Constitution");
+define('Intelligence_boost', "Intelligence");
 //Weapons
 define('HelpWeapons', "Here you can manage and edit all weapons and miscellaneous equipment available in the game.");
 define('Item_hands', "Hands");
@@ -245,6 +251,8 @@ define('You_cant_wear_that', "You can't wear that");
 define('This_piece_of_equipment_cant_be_removed', "This piece of equipment can't be removed");
 define('Open_door', "Open");
 define('Close_door', "Close");
+define('Use_item', "Use");
+define('Used_item', "You have used");
 //Frontend login
 define('Private_access', "Log in to DethQuest");
 define('Username_or_email', "Username / Email");
@@ -315,6 +323,7 @@ define('faction', "Corporate link");
 define('Back_city', "Exit");
 define('Buy', "Buy");
 define('Buy_weapon', "Buy weapon");
+define('Buy_equipment', "Acquire implant");
 define('Rate_of_fire', "Rate of fire");
 define('Buy_armor', "Buy item");
 define('Sell_for', "Sell for");

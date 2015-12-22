@@ -84,8 +84,7 @@ if( $dethuser->getCharacter() == 0 ){
           default:
             $inventory = $character->getInventory( 'healing' );
         }
-        foreach( $inventory as $line ){
-          $irow = new Inventory( $site->getDatalink(), $line );
+        foreach( $inventory as $irow ){
           switch( $irow->getType() ){
             case 'weapon':
               $item = new Weapon( $site->getDatalink(), $irow->getItem() );
@@ -119,6 +118,14 @@ if( $dethuser->getCharacter() == 0 ){
             break;
             case 'armor':
               echo Hitpoints.': <b>'.$irow->getValue().'</b> / '.$item->getHitpoints().'<br>'.Protection.': <b>'.$item->getProtection().'</b>';
+            break;
+            case 'equipment':
+              if( $item->getMaxhealth() != 0 ){ echo Health_boost.': <b>'.$item->getMaxhealth().'</b><br>'; }
+              if( $item->getSpeed() != 0 ){ echo Speed_boost.': <b>'.$item->getSpeed().'</b><br>'; }
+              if( $item->getStrength() != 0 ){ echo Strength_boost.': <b>'.$item->getStrength().'</b><br>'; }
+              if( $item->getDexterity() != 0 ){ echo Dexterity_boost.': <b>'.$item->getDexterity().'</b><br>'; }
+              if( $item->getConstitution() != 0 ){ echo Constitution_boost.': <b>'.$item->getConstitution().'</b><br>'; }
+              if( $item->getIntelligence() != 0 ){ echo Intelligence_boost.': <b>'.$item->getIntelligence().'</b><br>'; }
             break;
           }
           echo '<form name="sellweapon'.$item->getId().'" method="post" action="" onsubmit="event.preventDefault();backend.post(this,false)">
@@ -229,6 +236,17 @@ if( $dethuser->getCharacter() == 0 ){
                     <p><input type="submit" value="'.Buy.'"></p>';
                   break;
                 }
+              break;
+              case 'equipment':
+                echo '<p>';
+                if( $item->getMaxhealth() != 0 ){ echo Health_boost.': <b>'.$item->getMaxhealth().'</b><br>'; }
+                if( $item->getSpeed() != 0 ){ echo Speed_boost.': <b>'.$item->getSpeed().'</b><br>'; }
+                if( $item->getStrength() != 0 ){ echo Strength_boost.': <b>'.$item->getStrength().'</b><br>'; }
+                if( $item->getDexterity() != 0 ){ echo Dexterity_boost.': <b>'.$item->getDexterity().'</b><br>'; }
+                if( $item->getConstitution() != 0 ){ echo Constitution_boost.': <b>'.$item->getConstitution().'</b><br>'; }
+                if( $item->getIntelligence() != 0 ){ echo Intelligence_boost.': <b>'.$item->getIntelligence().'</b><br>'; }
+                echo '</p>
+                <p><input type="submit" value="'.Buy_equipment.'"></p>';
               break;
               default:
                 echo '<p><input type="submit" value="'.Buy.'"></p>';
