@@ -11,7 +11,7 @@ if( isset( $_POST['filter'] ) ){
 }
 $regspag = 20;
 ?>
-  <p><?php echo HelpCharacters; ?></p>
+<p><?php echo HelpCharacters; ?></p>
 <?php
 if (!isset($_POST['character'])){
 ?>
@@ -26,7 +26,7 @@ if (!isset($_POST['character'])){
   $query = 'select id from '.mod.'deth_characters where name like "%'.$filter.'%" and pc="1" order by name asc';
   $rows = $site->dbQuery( $query, 'rows' );
   $numpags = ceil( $rows / $regspag );
-  $result = $site->getDatalink()->dbQuery( $query, 'result', ( $regspag * $pag ) );
+  $result = $site->dbQuery( $query, 'result', ( $regspag * $pag ) );
   $i = 0;
   if( $rows > 0 ){
     foreach( $result as $row ){
@@ -39,7 +39,11 @@ if (!isset($_POST['character'])){
         <input type="hidden" name="pag" value="'.$pag.'">
         <input type="hidden" name="filter" value="'.$filter.'">
         <input type="hidden" name="character" value="'.$character->getId().'">
-        <div class="field"><b>'.$character->getName().'</b><br>'.$race->getName().' '.$class->getName().'</div>
+        <div class="field">
+          <b>'.$character->getName().'</b><br>
+          '.$race->getName().' '.$class->getName().'<br>
+          '.Level.' <b>'.$character->getLevel().'</b>
+        </div>
         <div class="field">
           <div class="charportrait">
             <div class="inner">'.$character->renderHtml( $module->getFolder(), true ).'</div>
@@ -61,20 +65,20 @@ if (!isset($_POST['character'])){
     }
     echo '<div class="pags">';
     $dots = false;
-    for ($a = 0; $a < $numpags; $a++){
-      if ($a > $numpags - 2
+    for( $a = 0; $a < $numpags; $a++ ){
+      if( $a > $numpags - 2
       or $a < 3
-      or ($a > $pag - 5 and $a < $pag + 5)){
+      or( $a > $pag - 5 and $a < $pag + 5 ) ){
         echo '<form name="pag'.$a.'" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
         <input type="hidden" name="pag" value="'.$a.'">
         <input type="hidden" name="filter" value="'.$filter.'">
         <input type="submit" value="';
-        if ($a == $pag){ echo '['.$a.']'; }else{ echo $a; }
+        if( $a == $pag ){ echo '['.$a.']'; }else{ echo $a; }
         echo '">
         </form>';
         $dots = false;
       }else{
-        if (!$dots){
+        if( !$dots ){
           echo ' ... ';
           $dots = true;
         }
@@ -113,6 +117,36 @@ if (!isset($_POST['character'])){
       case 'reload':
         echo $character->reload( $_POST['invrow'] );
       break;
+      case 'deleterow':
+        $line = new Inventory( $site->getDatalink(), $_POST['invrow'] );
+        if( $line->getPlayercharacter() == $character->getId() ){
+          $line->delete();
+        } 
+      break;
+      case 'giveitem':
+        $data = explode( '-' , $_POST['item'] );
+        if( count( $data ) == 2 ){
+          switch( $data[0] ){
+            case 'healing':
+              $item = new HealingItem( $site->getDatalink(), $data[1] );
+            break;
+            case 'repairing':
+              $item = new RepairingItem( $site->getDatalink(), $data[1] );
+            break;
+            case 'weapon':
+              $item = new Weapon( $site->getDatalink(), $data[1] );
+            break;
+            case 'armor':
+              $item = new Armor( $site->getDatalink(), $data[1] );
+            break;
+            case 'equipment':
+            default:
+              $item = new Equipment( $site->getDatalink(), $data[1] );
+            break;
+          }
+          $character->setEquipment( $data[0], $item, false );
+        }
+      break;
     }
   }
   $race = new Race( $site->getDatalink(), $character->getRace() );
@@ -131,7 +165,7 @@ if (!isset($_POST['character'])){
       ?></p>
       <?php
       $result = $site->getDatalink()->dbQuery( 'select user from '.mod.'deth_user where playercharacter="'.$character->getId().'"', 'result' );
-      if ( isset( $result[0] ) ){
+      if( isset( $result[0] ) ){
         $player = new User( $site->getDatalink(), $result[0][0]);
         echo '<p>'.Player_name.': <b>'.$player->getName().'</b><br>
         '.Email.': <b>'.$player->getEmail().'</b></p>';
@@ -142,7 +176,7 @@ if (!isset($_POST['character'])){
         '.Experience.': <b>'.$character->getExperience().' / '.$character->expNextLevel().'</b>'; 
       ?></p>
       <p><?php 
-        echo Wealth.': <span class="out">'.number_format($character->getCoins(), 0, ',', '.').Coins.'</span><br>
+        echo Wealth.': <span class="out">'.number_format( $character->getCoins(), 0, ',', '.' ).Coins.'</span><br>
         '.Premium_wealth.': <span class="out">'.number_format( $character->getPremium(), 0, ',', '.' ).'</span>'; 
       ?></p>
       <div class="charstats">
@@ -304,7 +338,40 @@ if (!isset($_POST['character'])){
     </div>
     <div class="equipsheet">
       <?php
-      echo '<h1>'.Inventory.'</h1>';
+      echo '<h1>'.Inventory.'</h1>
+      <form name="giveitem" onsubmit="event.preventDefault(); backend.post(this,false);" method="post" action="">
+        <input type="hidden" name="filter" value="'.$filter.'">
+        <input type="hidden" name="pag" value="'.$pag.'">
+        <input type="hidden" name="character" value="'.$character->getId().'">
+        <input type="hidden" name="invrow" value="0">
+        <input type="hidden" name="operation" value="giveitem">
+        <p><select name="item">';
+        $types = array( 'healing', 'repairing', 'weapon', 'armor', 'equipment' );
+        foreach( $types as $type ){
+          $result = $site->dbQuery( 'select id from '.mod.'deth_item_'.$type.' order by name asc' );
+          foreach( $result as $row ){
+            switch( $type ){
+              case 'healing':
+                $item = new HealingItem( $site->getDatalink(), $row[0]);
+              break;
+              case 'repairing':
+                $item = new RepairingItem( $site->getDatalink(), $row[0]);
+              break;
+              case 'weapon':
+                $item = new Weapon( $site->getDatalink(), $row[0]);
+              break;
+              case 'armor':
+                $item = new Armor( $site->getDatalink(), $row[0]);
+              break;
+              case 'equipment':
+                $item = new Equipment( $site->getDatalink(), $row[0]);
+              break;
+            }
+            echo '<option value="'.$type.'-'.$item->getId().'">'.$item->getName().'</option>';
+          }
+        }
+        echo '</select> <input type="submit" value="'.Add.'"></p>
+      </form>';
       $inventory = $character->getInventory();
       foreach( $inventory as $line ){
         $value = '';
@@ -342,9 +409,20 @@ if (!isset($_POST['character'])){
           break;          
         }
         echo '<div class="editionitem">
+        <form name="rem'.$line->getId().'" onsubmit="event.preventDefault(); backend.post(this,false);" method="post" action="">
+        <input type="hidden" name="filter" value="'.$filter.'">
+        <input type="hidden" name="pag" value="'.$pag.'">
+        <input type="hidden" name="character" value="'.$character->getId().'">
+        <input type="hidden" name="invrow" value="'.$line->getId().'">
+        <input type="hidden" name="operation" value="deleterow">
         <div class="field">
-        <b>'.$item->getName().'</b><br>
-        '.$value.'</div>
+          <b>'.$item->getName().'</b><br>
+          '.$value.'
+        </div>
+        <div class="field">
+          <input type="submit" value="'.Delete.'">
+        </div>
+        </form>
         </div>';
       }
       ?>

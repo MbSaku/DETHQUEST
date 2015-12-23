@@ -150,6 +150,10 @@ body {
   height:6em;
 }
 
+#cdethquest .editionitem {
+	background:#444444;
+}
+
 #cdethquest .dethtitle {
   font-family:'Orbitron',sans-serif;
   position:fixed;
@@ -1231,7 +1235,8 @@ textarea:hover {
 
 #cdethquest .esquare.edoor,
 #cdethquest .esquare.eweather,
-#cdethquest .esquare.esprite {
+#cdethquest .esquare.esprite,
+#cdethquest .eentity {
   position:absolute;
   top:0;
   left:0;
@@ -1255,6 +1260,16 @@ textarea:hover {
 #cdethquest .eweather,
 #cdethquest .texture.eweather {
   border:0.1em solid #ffffff;
+}
+
+#cdethquest .eentity {
+	margin:0.5em;
+  width:2em;
+  height:2em;
+  border:0.1em solid #000000;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #cdethquest #inpgraph,
@@ -1294,7 +1309,11 @@ textarea:hover {
   background-color:#000000;
 }
 
+/* MASTER MAP */
 
+#cdethquest #mapeditor.mapmaster {
+  font-size:1.25em;
+}
 
 /* PERSPECTIVE MAP */
 

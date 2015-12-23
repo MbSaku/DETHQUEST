@@ -203,7 +203,7 @@ if (!isset($_POST['map'])){
       <img class="texture" src="<?php echo $_GET['root'].'admin/'.$module->getFolder().'/css/images/square.png'; ?>"
       onclick="editor.setWeather('0',this.src)"></p>    
     </div>    
-    <div id="map-panel">      
+    <div id="map-panel">
       <h2><?php echo Map_data; ?></h2>
       <p class="pinput"><?php echo Map_name; ?>:<br>
       <input type="text" name="name" value="<?php echo $map->getName(); ?>"></p>

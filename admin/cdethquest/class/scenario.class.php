@@ -19,55 +19,57 @@ class Scenario extends DatabaseObject {
   }
   
   /*
- * GETTERS
+ * GETTERS AND SETTERS
  */
   
   public function getId(){
     return $this->id;
   }
+  
   public function getMap(){
     return $this->map;
   }
-  public function getStarted(){
-    return $this->started;
-  }
-  public function getFaction(){
-    return $this->faction;
-  }
-  public function getPlayers(){
-    return $this->players;
-  }
-  public function getTurntime(){
-    return $this->turntime;
-  }
-  public function getLevel(){
-    return $this->level;
-  }
-  public function getDifficulty(){
-    return $this->difficulty;
-  }
-  
-/*
- * SETTERS
- */
-  
   public function setMap( $map ){
     $this->map = $map;
   }
-  public function setStarted( $time ){
-    $this->started = $time;
+  
+  public function getStarted(){
+    return $this->started;
   }
-  public function setFaction( $factionid ){
-    $this->faction = $factionid;
+  public function setStarted( $timestamp ){
+    $this->started = $timestamp;
   }
-  public function setPlayers( $numplayers ){
-    $this->players = $numplayers;
+  
+  public function getFaction(){
+    return $this->faction;
   }
-  public function setTurntime( $turntime ){
-    $this->turntime = $turntime;
+  public function setFaction( $integer ){
+    $this->faction = $integer;
   }
-  public function setLevel( $levelstring ){
-    $this->level = $levelstring;
+  
+  public function getPlayers(){
+    return $this->players;
+  }
+  public function setPlayers( $integer ){
+    $this->players = $integer;
+  }
+  
+  public function getTurntime(){
+    return $this->turntime;
+  }
+  public function setTurntime( $integer ){
+    $this->turntime = $integer;
+  }
+  
+  public function getLevel(){
+    return $this->level;
+  }
+  public function setLevel( $string ){
+    $this->level = $string;
+  }
+  
+  public function getDifficulty(){
+    return $this->difficulty;
   }
   public function setDifficulty( $integer ){
     $this->difficulty = $integer;
@@ -328,7 +330,8 @@ class Scenario extends DatabaseObject {
   }
 
   public function getActualPlayer(){
-    $result = $this->datalink->dbQuery( 'select pchar from '.mod.'deth_game where scenario="'.$this->id.'" and active=1 limit 1' , 'result' );
+    $result = $this->datalink->dbQuery( 'select pchar from '.mod.'deth_game 
+    where scenario="'.$this->id.'" and active=1 limit 1' , 'result' );
     if( isset( $result[0] ) ){
       return $result[0][0];
     }else{

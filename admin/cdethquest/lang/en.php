@@ -52,6 +52,9 @@ define('Say_something', "Say something");
 define('Talk', "Talk" );
 define('Check_to_delete', "Check to delete");
 define('Edit', "Edit");
+define('Delete', "Remove");
+define('View', "View");
+define('Apply_changes', "Update");
 //Users
 define('Charge_applied', "Charge applied");
 define('HelpUsers', "Here you can see and manage the internal charges of the available users in this module.");
@@ -85,10 +88,15 @@ define('Player_name', "Player");
 define('Email', "Email");
 //NPCs
 define('HelpNPCs', "Allows you to manage the NPCs.");
+define('Create_npc', "Create a new NPC");
+define('Random_body', "Reload body");
+define('Random_face', "Reload face");
+define('Switch_gender', "Switch gender");
+define('Faceless', "Faceless");
 //Classes
 define('HelpClasses', "Here you can manage the diverse character classes available in game.");
 define('Add_class', "New class");
-define('Class_name', "Name");
+define('Class_name', "Class");
 define('Class_power', "Power");
 define('Class_playable', "PJ available");
 define('View_class', "Edit");
@@ -177,8 +185,17 @@ define('Brush', "Brush");
 define('Eraser', "Eraser");
 define('Weather', "Weather");
 //Master
-define('HelpMaster', "Here you can see and manage the active scenarios actually open.");
-define('Close_scenario', "Close");
+define('HelpMaster', "Allows you to see and manage the active matches.");
+define('Close_scenario', "Mark to close this match");
+define('Entity_placement', "Entity placement");
+define('Coordinate_x', "Coordinate X");
+define('Coordinate_y', "Coordinate Y");
+define('Place_nothing', "Do nothing");
+define('Scenario_entities', "Existing entities");
+define('Coordinates', "Placed at");
+define('Move_entity', "Move");
+define('Available_characters', "Available characters");
+define('Place_entity', "Place");
 //Items
 define('Add_item', "Add item");
 define('Item_name', "Name");

@@ -1,10 +1,10 @@
 <?php
-if (isset($_POST['pag'])){
+if( isset( $_POST['pag'] ) ){
   $pag = $_POST['pag'];
 }else{
   $pag = 0;
 }
-if (isset($_POST['filter'])){
+if( isset( $_POST['filter'] ) ){
   $filter = $_POST['filter'];
 }else{
   $filter = '';
@@ -58,20 +58,20 @@ if (!isset($_POST['item'])){
     }
     echo '<div class="pags">';
     $dots = false;
-    for ($a = 0; $a < $numpags; $a++){
-      if ($a > $numpags - 2
+    for( $a = 0; $a < $numpags; $a++ ){
+      if( $a > $numpags - 2
       or $a < 3
-      or ($a > $pag - 5 and $a < $pag + 5)){
+      or( $a > $pag - 5 and $a < $pag + 5 ) ){
         echo '<form name="pag'.$a.'" onsubmit="event.preventDefault(); backend.post(this);" method="post" action="">
         <input type="hidden" name="pag" value="'.$a.'">
         <input type="hidden" name="filter" value="'.$filter.'">
         <input type="submit" value="';
-        if ($a == $pag){ echo '['.$a.']'; }else{ echo $a; }
+        if( $a == $pag ){ echo '['.$a.']'; }else{ echo $a; }
         echo '">
         </form>';
         $dots = false;
       }else{
-        if (!$dots){
+        if( !$dots ){
           echo ' ... ';
           $dots = true;
         }

@@ -12,7 +12,7 @@ class PlayerCharacter extends DatabaseObject {
   protected $gender = 'male';
   protected $level = 1;
   protected $pc = false;
-  protected $health = 0;
+  protected $health = 1;
   protected $maxhealth = 1;
   protected $speed = 0;
   protected $strength = 0;
@@ -51,29 +51,53 @@ class PlayerCharacter extends DatabaseObject {
   public function getClass(){
     return $this->class;
   }
+  public function setClass( $integer ){
+    $this->class = $integer;
+  }
   
   public function getRace(){
     return $this->race;
+  }
+  public function setRace( $integer ){
+    $this->race = $integer;
   }
   
   public function getGender(){
     return $this->gender;
   }
+  public function setGender( $string ){
+    if( $string == 'male'
+    or $string == 'female' ){
+      $this->gender = $string;
+    }
+  }
   
   public function getBody(){
     return $this->body;
+  }
+  public function setBody( $integer ){
+    $this->body = $integer;
   }
   
   public function getHead(){
     return $this->head;
   }
+  public function setHead( $integer ){
+    $this->head = $integer;
+  }
   
   public function getHair(){
     return $this->hair;
   }
+  public function setHair( $integer ){
+    $this->hair = $integer;
+  }
   
   public function getFace(){
     return $this->face;
+  }
+  public function setFace( $integer ){
+    $this->face = $integer;
   }
   
   public function getLevel(){
@@ -96,25 +120,43 @@ class PlayerCharacter extends DatabaseObject {
   public function getMaxhealth(){
     return $this->maxhealth;
   }
+  public function setMaxhealth( $integer ){
+    $this->maxhealth = $integer;
+  }
   
   public function getSpeed(){
     return $this->speed;
+  }
+  public function setSpeed( $integer ){
+    $this->speed = $integer;
   }
   
   public function getStrength(){
     return $this->strength;
   }
+  public function setStrength( $integer ){
+    $this->strength = $integer;
+  }
   
   public function getDexterity(){
     return $this->dexterity;
+  }
+  public function setDexterity( $integer ){
+    $this->dexterity = $integer;
   }
   
   public function getConstitution(){
     return $this->constitution;
   }
+  public function setConstitution( $integer ){
+    $this->constitution = $integer;
+  }
   
   public function getIntelligence(){
     return $this->intelligence;
+  }
+  public function setIntelligence( $integer ){
+    $this->intelligence = $integer;
   }
   
   public function getCoins(){
@@ -195,13 +237,7 @@ class PlayerCharacter extends DatabaseObject {
     if ( $doable ){
       $this->name = $name;
       $this->pc = 1;
-      $this->health = round( $class->getHealth() * ( 1 + ($race->getModHealth() / 100) ) );
-      $this->maxhealth = $this->health;
-      $this->speed = round( $class->getSpeed() * ( 1 + ($race->getModSpeed() / 100) ) );
-      $this->strength = round( $class->getStrength() * ( 1 + ($race->getModStrength() / 100) ) );
-      $this->dexterity = round( $class->getDexterity() * ( 1 + ($race->getModDexterity() / 100) ) );
-      $this->constitution = round( $class->getConstitution() * ( 1 + ($race->getModConstitution() / 100) ) );
-      $this->intelligence = round( $class->getIntelligence() * ( 1 + ($race->getModIntelligence() / 100) ) );
+      $this->applyClassToStats();
       $this->coins = 1000 - $class->calculateWorth();
       if ( $this->coins < 0 ){ $this->coins = 0; }
       $this->save();
@@ -228,6 +264,18 @@ class PlayerCharacter extends DatabaseObject {
     }else{
       return '<p class="error">'.Some_of_selections_incorrect.'<br>'.$errors.'</p>';
     }
+  }
+  
+  public function loadRandomNPC(){
+    $race = new Race( $this->datalink, $this->race );
+    $genders[0] = 'male';
+    $genders[1] = 'female';
+    $this->gender = $genders[mt_rand( 0, 1 )];
+    $this->name = $race->getRandomName( $this->gender );
+    $this->class = $race->getRandomClass();
+    $this->body = $race->randomAppearance( 'body' );
+    $this->hair = $race->randomAppearance( 'hair' );
+    $this->applyClassToStats();
   }
   
   public function save(){
@@ -416,12 +464,14 @@ class PlayerCharacter extends DatabaseObject {
     return ( ( $this->level ) * 100 );
   }
 
-  public function setEquipment ( $type, $item ){
+  public function setEquipment ( $type, $item, $equip = true ){
     $errors = '';
     $added = false;
     if ( $item->getId() != 0 ){
-      switch($type){
+      switch( $type ){
         case 'equipment':
+        case 'healing':
+        case 'repairing':
           $added = $this->datalink->dbQuery( 'insert into '.mod.'deth_character_item (
           playercharacter, 
           type, 
@@ -482,7 +532,8 @@ class PlayerCharacter extends DatabaseObject {
         $result = $this->datalink->dbQuery( 'select id from '.mod.'deth_character_item 
         where playercharacter="'.$this->id.'" 
         order by id desc', 'result' );
-        if( isset( $result[0] ) ){
+        if( isset( $result[0] ) 
+        and $equip ){
           $this->equip( $result[0][0] );
         }
       }
@@ -651,9 +702,37 @@ class PlayerCharacter extends DatabaseObject {
     }
   }
   
+  public function place( $scenarioid, $x, $y ){
+    $scenario = new Scenario( $this->datalink, $scenarioid );
+    $map = new Map( $this->datalink, $scenario->getMap() );
+    $lev = $scenario->getMatrix( 'level' );
+    $deployed = false;
+    if( $scenario->isEmpty( $x, $y ) 
+    and isset( $lev[$y][$x] ) 
+    and $lev[$y][$x] == 0 ){
+      $scenario->place( $x, $y, 'char', $this->id );
+      $deployed = true;
+    }
+    if( $deployed and !$this->isPlaying() ){
+      $scenario->addPlayer( $this->id );
+    }
+  }
+  
   public function flee(){
     $this->datalink->dbQuery( 'delete from '.mod.'deth_scenario_entity where type="char" and entity="'.$this->id.'"', 'query' );
     $this->datalink->dbQuery( 'delete from '.mod.'deth_game where pchar="'.$this->id.'"', 'query' );
+  }
+  
+  public function applyClassToStats(){
+    $class = new CharacterClass( $this->datalink, $this->class );
+    $race = new Race( $this->datalink, $this->race );
+    $this->health = round( $class->getHealth() * ( 1 + ($race->getModHealth() / 100) ) );
+    $this->maxhealth = $this->health;
+    $this->speed = round( $class->getSpeed() * ( 1 + ($race->getModSpeed() / 100) ) );
+    $this->strength = round( $class->getStrength() * ( 1 + ($race->getModStrength() / 100) ) );
+    $this->dexterity = round( $class->getDexterity() * ( 1 + ($race->getModDexterity() / 100) ) );
+    $this->constitution = round( $class->getConstitution() * ( 1 + ($race->getModConstitution() / 100) ) );
+    $this->intelligence = round( $class->getIntelligence() * ( 1 + ($race->getModIntelligence() / 100) ) );
   }
   
   //Inventory related
@@ -754,7 +833,7 @@ class PlayerCharacter extends DatabaseObject {
     return $message;
   }
 
-  public function unequip( $inventoryid ){
+  public function unequip( $inventoryid, $force = false ){
     $message = '';
     $doable = false;
     $result = $this->datalink->dbQuery( 'select item, type from '.mod.'deth_character_item
@@ -778,7 +857,7 @@ class PlayerCharacter extends DatabaseObject {
         break;
       }
     }
-    if( $doable ){
+    if( $doable or $force ){
       if ( $this->datalink->dbQuery( 'update '.mod.'deth_character_item set 
       equipped="0" 
       where id="'.$inventoryid.'"', 'query' ) > 0 ){

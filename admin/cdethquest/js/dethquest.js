@@ -10,7 +10,7 @@ function Backend( script, root, module, lang, fingerprint, tag ){
   this.section = '';
   this.speed = 200;
   this.tag = tag;
-  this.adminLinks = ["administration", "characters", "items", "equipment", "master", "account"];
+  this.adminLinks = ["administration", "characters", "items", "equipment", "account"];
   
   this.link = function( me, op, section ){
     if( typeof( section ) === 'undefined' ){ section = ''; }
